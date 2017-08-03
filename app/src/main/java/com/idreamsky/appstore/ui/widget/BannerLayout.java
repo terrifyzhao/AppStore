@@ -24,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.Scroller;
 
 
+import com.bumptech.glide.Glide;
 import com.idreamsky.appstore.R;
 
 import java.io.Serializable;
@@ -207,7 +208,8 @@ public class BannerLayout extends RelativeLayout {
             }
         });
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        imageLoader.displayImage(getContext(),url,imageView);
+        Glide.with(getContext()).load(url).into(imageView);
+//        imageLoader.displayImage(getContext(),url,imageView);
         return imageView;
     }
 
