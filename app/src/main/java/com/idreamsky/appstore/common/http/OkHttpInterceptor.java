@@ -82,6 +82,8 @@ public class OkHttpInterceptor implements Interceptor {
             int index = url.indexOf("?");
             if (index > 0) {
                 url = url.substring(0, index) + "?p=" + newParams;
+            }else{
+                url = url + "?p=" + newParams;
             }
             newRequest = new Request.Builder().url(url).build();
         } else if (method.equals("POST")) {
