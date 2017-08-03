@@ -27,13 +27,13 @@ public class RecommendModel {
 
     public Observable<BaseBean<PageBean<AppInfo>>> getApps(){
 
-        JSONObject object = new JSONObject();
-        try {
-            object.put("page",0);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        String params = object.toString();
-        return apiService.getAppInfo(params);
+//        JSONObject object = new JSONObject();
+//        try {
+//            object.put("page",0);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        String params = object.toString();
+        return apiService.getAppInfo(0);
     }
 }

@@ -57,7 +57,6 @@ public class RecommendFragment extends ProgressFragment<RecommendPresenter> impl
         initRecycle(data);
     }
 
-
     private void initRecycle(List<AppInfo> datas) {
         RecommendAdapter mAdapter = new RecommendAdapter(getContext(), datas);
         mRecycleView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));

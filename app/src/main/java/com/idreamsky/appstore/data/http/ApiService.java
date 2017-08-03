@@ -18,6 +18,6 @@ public interface ApiService {
     String BaseUrl = "http://112.124.22.238:8081/course_api/cniaoplay/";
 
     @GET("featured2")
-    Observable<BaseBean<PageBean<AppInfo>>> getAppInfo(@Query("p") String jsonParams);
+    Observable<BaseBean<PageBean<AppInfo>>> getAppInfo(@Query("page") int page);
 
 }
