@@ -9,11 +9,13 @@ import android.widget.Toast;
 import com.idreamsky.appstore.AppApplication;
 import com.idreamsky.appstore.R;
 import com.idreamsky.appstore.bean.AppInfo;
+import com.idreamsky.appstore.bean.IndexBean;
 import com.idreamsky.appstore.di.component.AppComponent;
 import com.idreamsky.appstore.di.component.DaggerRecommendComponent;
 import com.idreamsky.appstore.di.module.RecommendModule;
 import com.idreamsky.appstore.presenter.RecommendPresenter;
 import com.idreamsky.appstore.presenter.contract.RecommendContract;
+import com.idreamsky.appstore.ui.adapter.IndexMutilAdapter;
 import com.idreamsky.appstore.ui.adapter.RecommendAdapter;
 import com.idreamsky.appstore.ui.decoration.DividerItemDecoration;
 
@@ -53,16 +55,20 @@ public class RecommendFragment extends ProgressFragment<RecommendPresenter> impl
     }
 
     @Override
-    public void showResult(List<AppInfo> data) {
+    public void showResult(IndexBean data) {
         initRecycle(data);
     }
 
-    private void initRecycle(List<AppInfo> datas) {
-        RecommendAdapter mAdapter = new RecommendAdapter(getContext(), datas);
+    private void initRecycle(IndexBean data) {
+//        RecommendAdapter mAdapter = new RecommendAdapter(getContext(), datas);
+
+
+        IndexMutilAdapter adapter = new IndexMutilAdapter(getContext());
+        adapter.setData(data);
         mRecycleView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         manager.setAutoMeasureEnabled(true);
         mRecycleView.setLayoutManager(manager);
-        mRecycleView.setAdapter(mAdapter);
+        mRecycleView.setAdapter(adapter);
     }
 }

@@ -23,6 +23,6 @@ public interface ApiService {
 
 
     @GET("index")
-    Observable<IndexBean> index();
+    Observable<BaseBean<IndexBean>> index();
 
 }

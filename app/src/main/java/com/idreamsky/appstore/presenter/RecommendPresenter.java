@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.widget.Toast;
 
 import com.idreamsky.appstore.bean.AppInfo;
+import com.idreamsky.appstore.bean.IndexBean;
 import com.idreamsky.appstore.bean.PageBean;
 import com.idreamsky.appstore.common.rx.RxHttpResponseCompat;
 import com.idreamsky.appstore.common.rx.observer.ProgressObserver;
@@ -32,23 +33,26 @@ public class RecommendPresenter extends BasePresenter<RecommendModel, RecommendC
 
     public void requestData() {
 
+
+//        mModel.getIndex().compose(RxHttpResponseCompat.<IndexBean>compatResult())
+
         RxPermissions rxPermissions = new RxPermissions((Activity) mContext);
         rxPermissions.request(Manifest.permission.READ_PHONE_STATE)
-                .flatMap(new Function<Boolean, ObservableSource<PageBean<AppInfo>>>() {
+                .flatMap(new Function<Boolean, ObservableSource<IndexBean>>() {
                     @Override
-                    public ObservableSource<PageBean<AppInfo>> apply(@NonNull Boolean aBoolean) throws Exception {
+                    public ObservableSource<IndexBean> apply(@NonNull Boolean aBoolean) throws Exception {
                         if (aBoolean){
-                            return mModel.getApps().compose(RxHttpResponseCompat.<PageBean<AppInfo>>compatResult());
+                            return mModel.getIndex().compose(RxHttpResponseCompat.<IndexBean>compatResult());
                         }else{
                             Toast.makeText(mContext, "无权限", Toast.LENGTH_SHORT).show();
                             return Observable.empty();
                         }
                     }
-                }).subscribe(new ProgressObserver<PageBean<AppInfo>>(mView) {
+                }).subscribe(new ProgressObserver<IndexBean>(mView) {
                     @Override
-                    public void onNext(@NonNull PageBean<AppInfo> pageBean) {
+                    public void onNext(@NonNull IndexBean pageBean) {
                         if (pageBean != null){
-                            mView.showResult(pageBean.getDatas());
+                            mView.showResult(pageBean);
                         }else{
                             mView.showError("无数据");
                         }

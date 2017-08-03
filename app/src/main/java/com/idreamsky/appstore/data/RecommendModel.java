@@ -2,6 +2,7 @@ package com.idreamsky.appstore.data;
 
 import com.idreamsky.appstore.bean.AppInfo;
 import com.idreamsky.appstore.bean.BaseBean;
+import com.idreamsky.appstore.bean.IndexBean;
 import com.idreamsky.appstore.bean.PageBean;
 import com.idreamsky.appstore.data.http.ApiService;
 
@@ -35,5 +36,9 @@ public class RecommendModel {
 //        }
 //        String params = object.toString();
         return apiService.getAppInfo(0);
+    }
+
+    public Observable<BaseBean<IndexBean>> getIndex(){
+        return apiService.index();
     }
 }

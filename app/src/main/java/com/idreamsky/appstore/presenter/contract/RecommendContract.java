@@ -1,6 +1,7 @@
 package com.idreamsky.appstore.presenter.contract;
 
 import com.idreamsky.appstore.bean.AppInfo;
+import com.idreamsky.appstore.bean.IndexBean;
 import com.idreamsky.appstore.presenter.BasePresenter;
 import com.idreamsky.appstore.ui.BaseView;
 
@@ -14,6 +15,6 @@ public interface RecommendContract {
 
     interface View extends BaseView{
 
-        void showResult(List<AppInfo> datas);
+        void showResult(IndexBean data);
     }
 }
