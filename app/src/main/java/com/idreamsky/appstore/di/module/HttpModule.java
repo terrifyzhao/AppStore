@@ -29,9 +29,9 @@ public class HttpModule {
 
     @Singleton
     @Provides
-    public OkHttpClient provideOkHttp(Gson gson){
+    public OkHttpClient provideOkHttp(Application application, Gson gson){
         OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new OkHttpInterceptor(gson))
+                .addInterceptor(new OkHttpInterceptor(application,gson))
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS)
                 .build();

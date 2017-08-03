@@ -1,16 +1,23 @@
 package com.idreamsky.appstore.presenter;
 
+import android.Manifest;
+import android.app.Activity;
+import android.widget.Toast;
+
 import com.idreamsky.appstore.bean.AppInfo;
 import com.idreamsky.appstore.bean.PageBean;
 import com.idreamsky.appstore.common.rx.RxHttpResponseCompat;
-import com.idreamsky.appstore.common.rx.observer.ProgressDialogObserver;
 import com.idreamsky.appstore.common.rx.observer.ProgressObserver;
 import com.idreamsky.appstore.data.RecommendModel;
 import com.idreamsky.appstore.presenter.contract.RecommendContract;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
 
 /**
  * Created by zhaojiuzhou on 2017/7/26.
@@ -25,9 +32,19 @@ public class RecommendPresenter extends BasePresenter<RecommendModel, RecommendC
 
     public void requestData() {
 
-        mModel.getApps()
-                .compose(RxHttpResponseCompat.<PageBean<AppInfo>>compatResult())
-                .subscribe(new ProgressObserver<PageBean<AppInfo>>(mView) {
+        RxPermissions rxPermissions = new RxPermissions((Activity) mContext);
+        rxPermissions.request(Manifest.permission.READ_PHONE_STATE)
+                .flatMap(new Function<Boolean, ObservableSource<PageBean<AppInfo>>>() {
+                    @Override
+                    public ObservableSource<PageBean<AppInfo>> apply(@NonNull Boolean aBoolean) throws Exception {
+                        if (aBoolean){
+                            return mModel.getApps().compose(RxHttpResponseCompat.<PageBean<AppInfo>>compatResult());
+                        }else{
+                            Toast.makeText(mContext, "无权限", Toast.LENGTH_SHORT).show();
+                            return Observable.empty();
+                        }
+                    }
+                }).subscribe(new ProgressObserver<PageBean<AppInfo>>(mView) {
                     @Override
                     public void onNext(@NonNull PageBean<AppInfo> pageBean) {
                         if (pageBean != null){

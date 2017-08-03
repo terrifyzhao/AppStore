@@ -2,6 +2,7 @@ package com.idreamsky.appstore.data.http;
 
 import com.idreamsky.appstore.bean.AppInfo;
 import com.idreamsky.appstore.bean.BaseBean;
+import com.idreamsky.appstore.bean.IndexBean;
 import com.idreamsky.appstore.bean.PageBean;
 
 import io.reactivex.Observable;
@@ -19,5 +20,9 @@ public interface ApiService {
 
     @GET("featured2")
     Observable<BaseBean<PageBean<AppInfo>>> getAppInfo(@Query("page") int page);
+
+
+    @GET("index")
+    Observable<IndexBean> index();
 
 }

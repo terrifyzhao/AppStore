@@ -1,6 +1,11 @@
 package com.idreamsky.appstore.common.http;
 
+import android.content.Context;
+
 import com.google.gson.Gson;
+import com.idreamsky.appstore.common.Constant;
+import com.idreamsky.appstore.common.util.DensityUtil;
+import com.idreamsky.appstore.common.util.DeviceUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -24,9 +29,11 @@ public class OkHttpInterceptor implements Interceptor {
 
     private static final MediaType JSON = MediaType.parse("application/json");
     private Gson mGson;
+    private Context mContext;
 
-    public OkHttpInterceptor(Gson mGson) {
+    public OkHttpInterceptor(Context context, Gson mGson) {
         this.mGson = mGson;
+        this.mContext = context;
     }
 
     @Override
@@ -37,58 +44,64 @@ public class OkHttpInterceptor implements Interceptor {
         HttpUrl httpUrl = request.url();
 
         HashMap<String, Object> paramsMap = new HashMap<>();
-        paramsMap.put("sdk","24");
+        paramsMap.put(Constant.IMEI, DeviceUtils.getIMEI(mContext));
+        paramsMap.put(Constant.MODEL, DeviceUtils.getModel());
+        paramsMap.put(Constant.LANGUAGE, DeviceUtils.getLanguage());
+        paramsMap.put(Constant.OS, DeviceUtils.getBuildVersionIncremental());
+        paramsMap.put(Constant.RESOLUTION, DensityUtil.getScreenW(mContext) + "*" + DensityUtil.getScreenH(mContext));
+        paramsMap.put(Constant.SDK, DeviceUtils.getBuildVersionSDK() + "");
+        paramsMap.put(Constant.DENSITY_SCALE_FACTOR, mContext.getResources().getDisplayMetrics().density + "");
 
         Request newRequest = null;
-        if (method.equals("GET")){
+        if (method.equals("GET")) {
 
             HashMap<String, Object> rootMap = new HashMap<>();
 
             Set<String> paramsNames = httpUrl.queryParameterNames();
-            for (String key : paramsNames){
-                if (key.equals("p")){
+            for (String key : paramsNames) {
+                if (key.equals("p")) {
                     String oldParams = httpUrl.queryParameter("p");
-                    if (oldParams != null){
-                        HashMap<String, Object> p = mGson.fromJson(oldParams,HashMap.class);
+                    if (oldParams != null) {
+                        HashMap<String, Object> p = mGson.fromJson(oldParams, HashMap.class);
 
-                        if (p != null){
-                            for (Map.Entry<String,Object> entry : p.entrySet()){
-                                rootMap.put(entry.getKey(),entry.getValue());
+                        if (p != null) {
+                            for (Map.Entry<String, Object> entry : p.entrySet()) {
+                                rootMap.put(entry.getKey(), entry.getValue());
                             }
                         }
                     }
-                }else{
-                    rootMap.put(key,httpUrl.queryParameter(key));
+                } else {
+                    rootMap.put(key, httpUrl.queryParameter(key));
                 }
             }
 
-            rootMap.put("publicParams",paramsMap);
+            rootMap.put("publicParams", paramsMap);
             String newParams = mGson.toJson(rootMap);
             String url = httpUrl.toString();
 
             int index = url.indexOf("?");
-            if (index > 0){
-                url = url.substring(0,index)+"?p="+newParams;
+            if (index > 0) {
+                url = url.substring(0, index) + "?p=" + newParams;
             }
             newRequest = new Request.Builder().url(url).build();
-        }else if (method.equals("POST")){
+        } else if (method.equals("POST")) {
 
             RequestBody body = request.body();
-            HashMap<String,Object> rootMap = new HashMap<>();
-            if (body instanceof FormBody){
-                for (int i=0; i<((FormBody) body).size(); i++){
-                    rootMap.put(((FormBody) body).encodedName(i),((FormBody) body).encodedValue(i));
+            HashMap<String, Object> rootMap = new HashMap<>();
+            if (body instanceof FormBody) {
+                for (int i = 0; i < ((FormBody) body).size(); i++) {
+                    rootMap.put(((FormBody) body).encodedName(i), ((FormBody) body).encodedValue(i));
                 }
-            }else{
+            } else {
                 Buffer buffer = new okio.Buffer();
                 body.writeTo(buffer);
                 String oldParams = buffer.readUtf8();
-                rootMap = mGson.fromJson(oldParams,HashMap.class);
-                rootMap.put("publicParams",mGson.toJson(paramsMap));
+                rootMap = mGson.fromJson(oldParams, HashMap.class);
+                rootMap.put("publicParams", mGson.toJson(paramsMap));
             }
             String newParams = mGson.toJson(rootMap);
 
-            newRequest = request.newBuilder().post(RequestBody.create(JSON,newParams)).build();
+            newRequest = request.newBuilder().post(RequestBody.create(JSON, newParams)).build();
 
 
         }
