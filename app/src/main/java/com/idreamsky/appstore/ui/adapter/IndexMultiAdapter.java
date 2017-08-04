@@ -24,20 +24,18 @@ import butterknife.ButterKnife;
  * Created by zhaojiuzhou on 2017/8/3.
  */
 
-public class IndexMutilAdapter extends RecyclerView.Adapter {
+public class IndexMultiAdapter extends RecyclerView.Adapter {
 
     private static final int TYPE_BANNER = 1;
     private static final int TYPE_ICON = 2;
     private static final int TYPE_APPS = 3;
     private static final int TYPE_GAMES = 4;
 
-
-
     private LayoutInflater mInflater;
     private IndexBean mIndexBeen;
     private Context mContext;
 
-    public IndexMutilAdapter(Context context) {
+    public IndexMultiAdapter(Context context) {
         this.mContext = context;
         mInflater = LayoutInflater.from(context);
     }
@@ -74,7 +72,7 @@ public class IndexMutilAdapter extends RecyclerView.Adapter {
                 return new IconViewHolder(view);
             case TYPE_GAMES:
             case TYPE_APPS:
-                view = mInflater.inflate(R.layout.template_recyleview_with_title, parent, false);
+                view = mInflater.inflate(R.layout.template_recyleview_with_title, null, false);
                 return new AppViewHolder(view);
             default:
                 return null;
@@ -107,32 +105,21 @@ public class IndexMutilAdapter extends RecyclerView.Adapter {
 
     private void setAppView(RecyclerView.ViewHolder holder,int type){
         AppViewHolder appViewHolder = (AppViewHolder) holder;
+        AppAdapter adapter = new AppAdapter.Builder(mContext).showNum(false).showBrief(true).showCategory(false).build();;
         if (type == 2){
             appViewHolder.text.setText(mContext.getResources().getString(R.string.recommend_app));
-            RecommendAdapter adapter = new RecommendAdapter(mContext,mIndexBeen.getRecommendApps());
-            appViewHolder.recyclerView.setAdapter(adapter);
-            appViewHolder.recyclerView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL_LIST));
-            LinearLayoutManager manager = new LinearLayoutManager(mContext);
-            manager.setAutoMeasureEnabled(true);
-            appViewHolder.recyclerView.setLayoutManager(manager);
-            appViewHolder.recyclerView.setAdapter(adapter);
+            adapter.setData(mIndexBeen.getRecommendApps());
         }else if (type == 3){
             appViewHolder.text.setText(mContext.getResources().getString(R.string.recommend_game));
-            RecommendAdapter adapter = new RecommendAdapter(mContext,mIndexBeen.getRecommendGames());
-            appViewHolder.recyclerView.setAdapter(adapter);
-            appViewHolder.recyclerView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL_LIST));
-            LinearLayoutManager manager = new LinearLayoutManager(mContext);
-            manager.setAutoMeasureEnabled(true);
-            appViewHolder.recyclerView.setLayoutManager(manager);
-            appViewHolder.recyclerView.setAdapter(adapter);
+            adapter.setData(mIndexBeen.getRecommendGames());
         }
-
-
-
-
+        appViewHolder.recyclerView.setAdapter(adapter);
+        appViewHolder.recyclerView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL_LIST));
+        LinearLayoutManager manager = new LinearLayoutManager(mContext);
+        manager.setAutoMeasureEnabled(true);
+        appViewHolder.recyclerView.setLayoutManager(manager);
+        appViewHolder.recyclerView.setAdapter(adapter);
     }
-
-
 
     @Override
     public int getItemCount() {

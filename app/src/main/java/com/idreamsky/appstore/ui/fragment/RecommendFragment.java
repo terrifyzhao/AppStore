@@ -2,24 +2,15 @@ package com.idreamsky.appstore.ui.fragment;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.idreamsky.appstore.AppApplication;
 import com.idreamsky.appstore.R;
-import com.idreamsky.appstore.bean.AppInfo;
 import com.idreamsky.appstore.bean.IndexBean;
 import com.idreamsky.appstore.di.component.AppComponent;
 import com.idreamsky.appstore.di.component.DaggerRecommendComponent;
 import com.idreamsky.appstore.di.module.RecommendModule;
 import com.idreamsky.appstore.presenter.RecommendPresenter;
 import com.idreamsky.appstore.presenter.contract.RecommendContract;
-import com.idreamsky.appstore.ui.adapter.IndexMutilAdapter;
-import com.idreamsky.appstore.ui.adapter.RecommendAdapter;
-import com.idreamsky.appstore.ui.decoration.DividerItemDecoration;
-
-import java.util.List;
+import com.idreamsky.appstore.ui.adapter.IndexMultiAdapter;
 
 import butterknife.BindView;
 
@@ -32,7 +23,7 @@ public class RecommendFragment extends ProgressFragment<RecommendPresenter> impl
 
     @Override
     protected int setLayoutId() {
-        return R.layout.fragment_recommend;
+        return R.layout.template_recyleview;
     }
 
     @Override
@@ -60,12 +51,8 @@ public class RecommendFragment extends ProgressFragment<RecommendPresenter> impl
     }
 
     private void initRecycle(IndexBean data) {
-//        RecommendAdapter mAdapter = new RecommendAdapter(getContext(), datas);
-
-
-        IndexMutilAdapter adapter = new IndexMutilAdapter(getContext());
+        IndexMultiAdapter adapter = new IndexMultiAdapter(getContext());
         adapter.setData(data);
-//        mRecycleView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         manager.setAutoMeasureEnabled(true);
         mRecycleView.setLayoutManager(manager);

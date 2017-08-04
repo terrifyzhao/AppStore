@@ -33,9 +33,6 @@ public class RecommendPresenter extends BasePresenter<RecommendModel, RecommendC
 
     public void requestData() {
 
-
-//        mModel.getIndex().compose(RxHttpResponseCompat.<IndexBean>compatResult())
-
         RxPermissions rxPermissions = new RxPermissions((Activity) mContext);
         rxPermissions.request(Manifest.permission.READ_PHONE_STATE)
                 .flatMap(new Function<Boolean, ObservableSource<IndexBean>>() {
