@@ -65,7 +65,7 @@ public class RecommendFragment extends ProgressFragment<RecommendPresenter> impl
 
         IndexMutilAdapter adapter = new IndexMutilAdapter(getContext());
         adapter.setData(data);
-        mRecycleView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+//        mRecycleView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         manager.setAutoMeasureEnabled(true);
         mRecycleView.setLayoutManager(manager);

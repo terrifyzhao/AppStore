@@ -1,16 +1,17 @@
 package com.idreamsky.appstore.ui.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.idreamsky.appstore.R;
 import com.idreamsky.appstore.bean.Banner;
 import com.idreamsky.appstore.bean.IndexBean;
+import com.idreamsky.appstore.ui.decoration.DividerItemDecoration;
 import com.idreamsky.appstore.ui.widget.BannerLayout;
 
 import java.util.ArrayList;
@@ -31,14 +32,17 @@ public class IndexMutilAdapter extends RecyclerView.Adapter {
     private static final int TYPE_GAMES = 4;
 
 
+
     private LayoutInflater mInflater;
     private IndexBean mIndexBeen;
+    private Context mContext;
 
     public IndexMutilAdapter(Context context) {
+        this.mContext = context;
         mInflater = LayoutInflater.from(context);
     }
 
-    public void setData(IndexBean indexBeen){
+    public void setData(IndexBean indexBeen) {
         this.mIndexBeen = indexBeen;
     }
 
@@ -70,7 +74,7 @@ public class IndexMutilAdapter extends RecyclerView.Adapter {
                 return new IconViewHolder(view);
             case TYPE_GAMES:
             case TYPE_APPS:
-                view = mInflater.inflate(R.layout.template_appinfo, parent, false);
+                view = mInflater.inflate(R.layout.template_recyleview_with_title, parent, false);
                 return new AppViewHolder(view);
             default:
                 return null;
@@ -80,16 +84,55 @@ public class IndexMutilAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (position == 0) {
-            BannerViewHolder bannerViewHolder = (BannerViewHolder) holder;
+            setBannerView(holder);
+        }else if (position == 1){
 
-            List<Banner> banners = mIndexBeen.getBanners();
-            List<String> urls = new ArrayList<>(banners.size());
-            for (Banner banner : banners){
-                urls.add(banner.getThumbnail());
-            }
-            bannerViewHolder.banner.setViewUrls(urls);
+        }else if (position == 2){
+            setAppView(holder,position);
+        }else if (position == 3){
+            setAppView(holder,position);
         }
     }
+
+    private void setBannerView(RecyclerView.ViewHolder holder){
+        BannerViewHolder bannerViewHolder = (BannerViewHolder) holder;
+
+        List<Banner> banners = mIndexBeen.getBanners();
+        List<String> urls = new ArrayList<>(banners.size());
+        for (Banner banner : banners) {
+            urls.add(banner.getThumbnail());
+        }
+        bannerViewHolder.banner.setViewUrls(urls);
+    }
+
+    private void setAppView(RecyclerView.ViewHolder holder,int type){
+        AppViewHolder appViewHolder = (AppViewHolder) holder;
+        if (type == 2){
+            appViewHolder.text.setText(mContext.getResources().getString(R.string.recommend_app));
+            RecommendAdapter adapter = new RecommendAdapter(mContext,mIndexBeen.getRecommendApps());
+            appViewHolder.recyclerView.setAdapter(adapter);
+            appViewHolder.recyclerView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL_LIST));
+            LinearLayoutManager manager = new LinearLayoutManager(mContext);
+            manager.setAutoMeasureEnabled(true);
+            appViewHolder.recyclerView.setLayoutManager(manager);
+            appViewHolder.recyclerView.setAdapter(adapter);
+        }else if (type == 3){
+            appViewHolder.text.setText(mContext.getResources().getString(R.string.recommend_game));
+            RecommendAdapter adapter = new RecommendAdapter(mContext,mIndexBeen.getRecommendGames());
+            appViewHolder.recyclerView.setAdapter(adapter);
+            appViewHolder.recyclerView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL_LIST));
+            LinearLayoutManager manager = new LinearLayoutManager(mContext);
+            manager.setAutoMeasureEnabled(true);
+            appViewHolder.recyclerView.setLayoutManager(manager);
+            appViewHolder.recyclerView.setAdapter(adapter);
+        }
+
+
+
+
+    }
+
+
 
     @Override
     public int getItemCount() {
@@ -103,7 +146,7 @@ public class IndexMutilAdapter extends RecyclerView.Adapter {
 
         public BannerViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 
@@ -111,15 +154,20 @@ public class IndexMutilAdapter extends RecyclerView.Adapter {
 
         public IconViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(itemView);
+            ButterKnife.bind(this,itemView);
         }
     }
 
     class AppViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.text)
+        TextView text;
+        @BindView(R.id.recyclerView)
+        RecyclerView recyclerView;
+
         public AppViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(itemView);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

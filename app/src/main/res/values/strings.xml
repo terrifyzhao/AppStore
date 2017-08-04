@@ -15,4 +15,6 @@
     <string name="hot_app">热门应用</string>
     <string name="hot_game">热门游戏</string>
     <string name="hot_top">热门排名</string>
+    <string name="recommend_app">推荐应用</string>
+    <string name="recommend_game">推荐游戏</string>
 </resources>
