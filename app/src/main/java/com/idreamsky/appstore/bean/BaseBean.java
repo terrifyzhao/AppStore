@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 public class BaseBean<T> implements Serializable {
     public static final int SUCCESS = 1;
-    private String msg;
+    private String message;
     private int status;
     private T data;
 
@@ -18,12 +18,12 @@ public class BaseBean<T> implements Serializable {
         return (status== SUCCESS);
     }
 
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public int getStatus() {

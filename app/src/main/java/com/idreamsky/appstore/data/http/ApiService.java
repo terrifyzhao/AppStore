@@ -28,4 +28,7 @@ public interface ApiService {
     @GET("toplist")
     Observable<BaseBean<PageBean<AppInfo>>> rank(@Query("page") int page);
 
+    @GET("game")
+    Observable<BaseBean<PageBean<AppInfo>>> game(@Query("page") int page);
+
 }

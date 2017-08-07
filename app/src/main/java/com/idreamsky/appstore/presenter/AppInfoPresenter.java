@@ -4,29 +4,30 @@ import com.idreamsky.appstore.bean.AppInfo;
 import com.idreamsky.appstore.bean.PageBean;
 import com.idreamsky.appstore.common.rx.RxHttpResponseCompat;
 import com.idreamsky.appstore.common.rx.observer.ProgressObserver;
-import com.idreamsky.appstore.data.RankModel;
-import com.idreamsky.appstore.presenter.contract.RankContract;
+import com.idreamsky.appstore.data.AppInfoModel;
+import com.idreamsky.appstore.presenter.contract.AppInfoContract;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 /**
  * Created by zhaojiuzhou on 2017/8/4.
  */
 
-public class RankPresenter extends BasePresenter<RankModel, RankContract.View> {
+public class AppInfoPresenter extends BasePresenter<AppInfoModel, AppInfoContract.View> {
+
+
+
 
     @Inject
-    public RankPresenter(RankModel rankModel, RankContract.View view) {
-        super(rankModel, view);
+    public AppInfoPresenter(AppInfoModel appInfoModel, AppInfoContract.View view) {
+        super(appInfoModel, view);
     }
 
-    public void RequestData(int page) {
+    public void RequestData(int type, int page) {
 
         Observer<PageBean<AppInfo>> observer;
         if (page > 0){
@@ -69,7 +70,7 @@ public class RankPresenter extends BasePresenter<RankModel, RankContract.View> {
         }
 
 
-        mModel.getRankList(page)
+        mModel.getListData(type,page)
                 .compose(RxHttpResponseCompat.<PageBean<AppInfo>>compatResult())
                 .subscribe(observer);
     }

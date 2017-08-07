@@ -105,7 +105,7 @@ public class IndexMultiAdapter extends RecyclerView.Adapter {
 
     private void setAppView(RecyclerView.ViewHolder holder,int type){
         AppViewHolder appViewHolder = (AppViewHolder) holder;
-        AppAdapter adapter = new AppAdapter.Builder(mContext).showNum(false).showBrief(true).showCategory(false).build();;
+        AppInfoAdapter adapter = new AppInfoAdapter.Builder(mContext).showNum(false).showBrief(true).showCategory(false).build();;
         if (type == 2){
             appViewHolder.text.setText(mContext.getResources().getString(R.string.recommend_app));
             adapter.setData(mIndexBeen.getRecommendApps());
