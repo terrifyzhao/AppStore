@@ -9,11 +9,9 @@ import com.idreamsky.appstore.presenter.contract.RankContract;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 /**
  * Created by zhaojiuzhou on 2017/8/4.
