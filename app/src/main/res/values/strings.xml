@@ -18,4 +18,7 @@
     <string name="hot_top">热门排名</string>
     <string name="recommend_app">推荐应用</string>
     <string name="recommend_game">推荐游戏</string>
+    <string name="res_tip_phone">请输入手机号</string>
+    <string name="res_tip_psw">请输入密码</string>
+    <string name="res_login">登录</string>
 </resources>

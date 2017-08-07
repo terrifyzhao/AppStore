@@ -19,9 +19,6 @@ import io.reactivex.disposables.Disposable;
 
 public class AppInfoPresenter extends BasePresenter<AppInfoModel, AppInfoContract.View> {
 
-
-
-
     @Inject
     public AppInfoPresenter(AppInfoModel appInfoModel, AppInfoContract.View view) {
         super(appInfoModel, view);
@@ -68,7 +65,6 @@ public class AppInfoPresenter extends BasePresenter<AppInfoModel, AppInfoContrac
                 }
             };
         }
-
 
         mModel.getListData(type,page)
                 .compose(RxHttpResponseCompat.<PageBean<AppInfo>>compatResult())

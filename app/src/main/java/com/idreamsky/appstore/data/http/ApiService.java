@@ -3,11 +3,15 @@ package com.idreamsky.appstore.data.http;
 import com.idreamsky.appstore.bean.AppInfo;
 import com.idreamsky.appstore.bean.BaseBean;
 import com.idreamsky.appstore.bean.IndexBean;
+import com.idreamsky.appstore.bean.LoginBean;
+import com.idreamsky.appstore.bean.LoginRequestBean;
 import com.idreamsky.appstore.bean.PageBean;
 
 import io.reactivex.Observable;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 /**
@@ -30,5 +34,8 @@ public interface ApiService {
 
     @GET("game")
     Observable<BaseBean<PageBean<AppInfo>>> game(@Query("page") int page);
+
+    @POST("login")
+    Observable<LoginBean> login(@Body LoginRequestBean loginRequest);
 
 }
