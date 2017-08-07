@@ -8,7 +8,7 @@ import com.idreamsky.appstore.ui.BaseView;
  * Created by zhaojiuzhou on 2017/8/4.
  */
 
-public interface RankContract {
+public interface AppInfoContract {
 
     interface View extends BaseView{
 

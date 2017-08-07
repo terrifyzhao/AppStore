@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
  * Created by zhaojiuzhou on 2017/7/25.
  */
 
-public class AppAdapter extends RecyclerView.Adapter<AppAdapter.ViewHolder> {
+public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHolder> {
 
 
     private Context mContext;
@@ -29,7 +29,7 @@ public class AppAdapter extends RecyclerView.Adapter<AppAdapter.ViewHolder> {
     private LayoutInflater mInflater;
     private Builder mBuilder;
 
-    private AppAdapter(Context mContext, Builder builder) {
+    private AppInfoAdapter(Context mContext, Builder builder) {
         this.mContext = mContext;
         this.mBuilder = builder;
 
@@ -119,8 +119,8 @@ public class AppAdapter extends RecyclerView.Adapter<AppAdapter.ViewHolder> {
             return this;
         }
 
-        public AppAdapter build() {
-            return new AppAdapter(context,this);
+        public AppInfoAdapter build() {
+            return new AppInfoAdapter(context,this);
         }
 
     }

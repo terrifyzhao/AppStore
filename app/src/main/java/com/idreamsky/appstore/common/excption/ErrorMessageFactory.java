@@ -15,7 +15,7 @@ import static com.idreamsky.appstore.common.excption.BaseException.ERROR_OTHER;
 public class ErrorMessageFactory {
 
     public static String create(Context context, int code){
-        String errMsg = null;
+        String errMsg;
 
         switch (code){
             case ERROR_HTTP:
@@ -26,6 +26,9 @@ public class ErrorMessageFactory {
                 break;
             case ERROR_OTHER:
                 errMsg = context.getResources().getString(R.string.error_other);
+                break;
+            default:
+                errMsg = context.getResources().getString(R.string.error_no);
                 break;
         }
         return errMsg;

@@ -1,5 +1,6 @@
 package com.idreamsky.appstore.common.rx.observer;
 
+import com.idreamsky.appstore.common.excption.BaseException;
 import com.idreamsky.appstore.ui.BaseView;
 
 import io.reactivex.annotations.NonNull;
@@ -36,6 +37,6 @@ public abstract class ProgressObserver<T> extends DefaultObserver<T> {
 
     @Override
     public void onError(@NonNull Throwable e) {
-        mView.showError(e.getMessage());
+        mView.showError(((BaseException)e).getMsg());
     }
 }
