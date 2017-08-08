@@ -1,5 +1,6 @@
 package com.idreamsky.appstore.presenter.contract;
 
+import com.idreamsky.appstore.bean.LoginBean;
 import com.idreamsky.appstore.ui.BaseView;
 
 /**
@@ -9,7 +10,7 @@ import com.idreamsky.appstore.ui.BaseView;
 public interface LoginContract {
 
     interface View extends BaseView{
-
+        void startActivity(LoginBean bean);
     }
 
 }

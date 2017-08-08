@@ -36,6 +36,6 @@ public interface ApiService {
     Observable<BaseBean<PageBean<AppInfo>>> game(@Query("page") int page);
 
     @POST("login")
-    Observable<LoginBean> login(@Body LoginRequestBean loginRequest);
+    Observable<BaseBean<LoginBean>> login(@Body LoginRequestBean loginRequest);
 
 }
