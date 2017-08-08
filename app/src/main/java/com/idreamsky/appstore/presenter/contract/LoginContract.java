@@ -10,7 +10,7 @@ import com.idreamsky.appstore.ui.BaseView;
 public interface LoginContract {
 
     interface View extends BaseView{
-        void startActivity(LoginBean bean);
+        void startActivity();
     }
 
 }

@@ -27,7 +27,7 @@ import okio.Buffer;
 
 public class OkHttpInterceptor implements Interceptor {
 
-    private static final MediaType JSON = MediaType.parse("application/json");
+    private static final MediaType JSON = MediaType.parse("Text");
     private Gson mGson;
     private Context mContext;
 
@@ -99,13 +99,10 @@ public class OkHttpInterceptor implements Interceptor {
                 body.writeTo(buffer);
                 String oldParams = buffer.readUtf8();
                 rootMap = mGson.fromJson(oldParams, HashMap.class);
-                rootMap.put("publicParams", mGson.toJson(paramsMap));
+                rootMap.put("publicParams",paramsMap);
             }
             String newParams = mGson.toJson(rootMap);
-
-            newRequest = request.newBuilder().post(RequestBody.create(JSON, newParams)).build();
-
-
+            newRequest = new Request.Builder().url(httpUrl.toString()).post(RequestBody.create(JSON,newParams)).build();
         }
 
         return chain.proceed(newRequest);

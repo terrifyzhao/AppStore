@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -86,6 +87,13 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
             }
         });
 
+        toolBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
     }
 
     private boolean availablePhone(CharSequence text) {
@@ -118,9 +126,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         mProgress.dismiss();
     }
 
+
     @Override
-    public void startActivity(LoginBean bean) {
-        startActivity(new Intent(this, MainActivity.class));
+    public void startActivity() {
+//        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 }

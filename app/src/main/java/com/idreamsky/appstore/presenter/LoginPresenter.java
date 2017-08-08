@@ -1,8 +1,14 @@
 package com.idreamsky.appstore.presenter;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.idreamsky.appstore.bean.LoginBean;
 import com.idreamsky.appstore.bean.LoginRequestBean;
+import com.idreamsky.appstore.common.Constant;
+import com.idreamsky.appstore.common.excption.ApiExcption;
 import com.idreamsky.appstore.common.rx.RxHttpResponseCompat;
+import com.idreamsky.appstore.common.util.SharedUtil;
 import com.idreamsky.appstore.data.LoginModel;
 import com.idreamsky.appstore.presenter.contract.LoginContract;
 
@@ -34,12 +40,17 @@ public class LoginPresenter extends BasePresenter<LoginModel,LoginContract.View>
 
             @Override
             public void onNext(@NonNull LoginBean loginBean) {
-                mView.startActivity(loginBean);
+                saveUserData(loginBean);
+                mView.startActivity();
             }
 
             @Override
             public void onError(@NonNull Throwable e) {
-                mView.showError(e.getMessage());
+                if (e instanceof ApiExcption){
+                    mView.showError(((ApiExcption) e).getMsg());
+                }else{
+                    mView.showError(e.getMessage());
+                }
             }
 
             @Override
@@ -47,6 +58,15 @@ public class LoginPresenter extends BasePresenter<LoginModel,LoginContract.View>
                 mView.dismissLoading();
             }
         });
+    }
+
+    private void saveUserData(LoginBean loginBean){
+        SharedPreferences.Editor editor = SharedUtil.with(mContext).edit();
+        editor.putString("token",loginBean.getToken());
+        editor.putString("photo",loginBean.getUser().getLogo_url());
+        editor.putString("userName",loginBean.getUser().getUsername());
+        editor.apply();
+
     }
 
 }

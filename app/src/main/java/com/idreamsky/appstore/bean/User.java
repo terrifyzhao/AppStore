@@ -1,10 +1,12 @@
 package com.idreamsky.appstore.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by idreamsky on 2017/8/7.
  */
 
-public class User {
+public class User implements Serializable{
 
     private int id;
     private String email;

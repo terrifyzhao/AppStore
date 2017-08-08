@@ -155,6 +155,9 @@ public class IndexMultiAdapter extends RecyclerView.Adapter {
         public AppViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
+            //防止嵌套的RecycleView抢焦，导致自动滑动
+            recyclerView.setFocusableInTouchMode(false);
+            recyclerView.requestFocus();
         }
     }
 }
