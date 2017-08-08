@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.idreamsky.appstore.common.Constant;
 import com.idreamsky.appstore.common.util.DensityUtil;
 import com.idreamsky.appstore.common.util.DeviceUtils;
+import com.idreamsky.appstore.common.util.SharedUtil;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -51,6 +52,7 @@ public class OkHttpInterceptor implements Interceptor {
         paramsMap.put(Constant.RESOLUTION, DensityUtil.getScreenW(mContext) + "*" + DensityUtil.getScreenH(mContext));
         paramsMap.put(Constant.SDK, DeviceUtils.getBuildVersionSDK() + "");
         paramsMap.put(Constant.DENSITY_SCALE_FACTOR, mContext.getResources().getDisplayMetrics().density + "");
+        paramsMap.put(Constant.TOKEN, SharedUtil.with(mContext).getString("token",""));
 
         Request newRequest = null;
         if (method.equals("GET")) {

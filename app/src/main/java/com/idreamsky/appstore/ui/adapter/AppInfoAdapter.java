@@ -70,7 +70,11 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        if (mData != null){
+            return mData.size();
+        }else{
+            return 0;
+        }
     }
 
 

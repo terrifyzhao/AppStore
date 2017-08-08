@@ -50,9 +50,9 @@ public class GameFragment extends ProgressFragment<AppInfoPresenter> implements 
 
     private void initRecycleView() {
         adapter = new AppInfoAdapter.Builder(getActivity())
-                .showNum(true)
-                .showBrief(false)
-                .showCategory(true)
+                .showNum(false)
+                .showBrief(true)
+                .showCategory(false)
                 .build();
         mRecycleView.setAdapter(adapter);
         mRecycleView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));

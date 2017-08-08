@@ -1,15 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/menuUpdate"
-        android:title="应用更新"
-        android:icon="@mipmap/update"/>
-    <item
-        android:id="@+id/menuMessage"
-        android:title="消息中心"
-        android:icon="@mipmap/message"/>
-    <item
-        android:id="@+id/menuSetting"
-        android:title="设置"
-        android:icon="@mipmap/setting"/>
+
+
+    <group
+        android:id="@+id/group1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/menuUpdate"
+            android:title="应用更新"
+            android:icon="@drawable/update_icon"/>
+        <item
+            android:id="@+id/menuMessage"
+            android:title="消息中心"
+            android:icon="@drawable/message_icon"/>
+        <item
+            android:id="@+id/menuSetting"
+            android:title="设置"
+            android:icon="@drawable/setting_icon"/>
+
+        <item
+            android:id="@+id/menuUninstall"
+            android:title="卸载"
+            android:icon="@drawable/uninstall_icon"/>
+    </group>
+
+
+    <group
+        android:id="@+id/group2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/menuLogout"
+            android:title="退出登录"
+            android:icon="@drawable/logout_icon"/>
+    </group>
+
+
 </menu>

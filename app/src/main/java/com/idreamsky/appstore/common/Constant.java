@@ -18,4 +18,6 @@ public class Constant {
     public static final String PARAM ="p" ;
 
     public static final String SHAREDPREFERENCES ="Appstore" ;
+    public static final String TOKEN ="token" ;
+
 }
