@@ -1,6 +1,8 @@
 package com.idreamsky.appstore.ui.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -8,6 +10,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -86,6 +89,10 @@ public class MainActivity extends BaseActivity{
                     case R.id.menuSetting:
                         Toast.makeText(MainActivity.this, "setting", Toast.LENGTH_SHORT).show();
                         break;
+                    case R.id.menuLogout:
+                        logout();
+
+                        break;
                 }
                 return false;
             }
@@ -99,6 +106,26 @@ public class MainActivity extends BaseActivity{
         mDrawLayout.addDrawerListener(toggle);
     }
 
+    private void logout() {
+        new AlertDialog.Builder(MainActivity.this)
+                .setMessage("确认退出登录吗")
+                .setNegativeButton("取消", null)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences.Editor editor = SharedUtil.with(MainActivity.this).edit();
+                        editor.remove("token");
+                        editor.remove("userName");
+                        editor.remove("photo");
+                        editor.apply();
+                        refreshUser();
+                        Toast.makeText(MainActivity.this, "退出登录成功", Toast.LENGTH_SHORT).show();
+                        mDrawLayout.closeDrawers();
+                    }
+                })
+                .show();
+    }
+
     private void initTabLayout() {
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(adapter);
@@ -109,13 +136,19 @@ public class MainActivity extends BaseActivity{
     @Override
     protected void onResume() {
         super.onResume();
+        refreshUser();
+
+    }
+
+    private void refreshUser() {
         String url = SharedUtil.with(this).getString("photo","");
         String name = SharedUtil.with(this).getString("userName","");
         if (TextUtils.isEmpty(name)){
+            ((TextView) headerView.findViewById(R.id.textName)).setText("请登录");
+            ((ImageView) headerView.findViewById(R.id.ivPhoto)).setImageResource(R.mipmap.ic_launcher_round);
             return;
         }
         if (!TextUtils.isEmpty(url)){
-
 
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.transform(new CircleCrop());
