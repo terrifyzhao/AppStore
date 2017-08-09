@@ -69,7 +69,7 @@ public class MainActivity extends BaseActivity{
 
     private void initDrawLayout() {
         headerView = mNavigationView.getHeaderView(0);
-        headerView.setOnClickListener(new View.OnClickListener() {
+        headerView.findViewById(R.id.ivPhoto).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this,LoginActivity.class));
@@ -140,6 +140,9 @@ public class MainActivity extends BaseActivity{
 
     }
 
+    /**
+     * 刷新用户信息
+     */
     private void refreshUser() {
         String url = SharedUtil.with(this).getString("photo","");
         String name = SharedUtil.with(this).getString("userName","");

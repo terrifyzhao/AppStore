@@ -19,5 +19,6 @@ public class Constant {
 
     public static final String SHAREDPREFERENCES ="Appstore" ;
     public static final String TOKEN ="token" ;
+    public static final String ICON_BASE_URL ="http://file.market.xiaomi.com/mfc/thumbnail/png/w150q80/" ;
 
 }

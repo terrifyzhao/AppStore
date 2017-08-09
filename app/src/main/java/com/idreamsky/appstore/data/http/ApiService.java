@@ -2,10 +2,13 @@ package com.idreamsky.appstore.data.http;
 
 import com.idreamsky.appstore.bean.AppInfo;
 import com.idreamsky.appstore.bean.BaseBean;
+import com.idreamsky.appstore.bean.CategoryBean;
 import com.idreamsky.appstore.bean.IndexBean;
 import com.idreamsky.appstore.bean.LoginBean;
 import com.idreamsky.appstore.bean.LoginRequestBean;
 import com.idreamsky.appstore.bean.PageBean;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.Call;
@@ -37,5 +40,8 @@ public interface ApiService {
 
     @POST("login")
     Observable<BaseBean<LoginBean>> login(@Body LoginRequestBean loginRequest);
+
+    @GET("category")
+    Observable<BaseBean<List<CategoryBean>>> category();
 
 }

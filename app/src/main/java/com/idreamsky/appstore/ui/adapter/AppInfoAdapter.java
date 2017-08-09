@@ -17,6 +17,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.idreamsky.appstore.common.Constant.ICON_BASE_URL;
+
 /**
  * Created by zhaojiuzhou on 2017/7/25.
  */
@@ -55,8 +57,7 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
         //应用名字
         holder.nameText.setText(mData.get(position).getDisplayName());
         //应用icon
-        String imageUrl = "http://file.market.xiaomi.com/mfc/thumbnail/png/w150q80/";
-        Glide.with(mContext).load(imageUrl + mData.get(position).getIcon()).into(holder.iconImage);
+        Glide.with(mContext).load(ICON_BASE_URL + mData.get(position).getIcon()).into(holder.iconImage);
         //简介
         holder.briefText.setVisibility(mBuilder.isShowBrief ? View.VISIBLE : View.GONE);
         holder.briefText.setText(mData.get(position).getBriefShow());

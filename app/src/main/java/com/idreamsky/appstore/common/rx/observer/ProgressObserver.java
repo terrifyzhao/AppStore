@@ -37,6 +37,10 @@ public abstract class ProgressObserver<T> extends DefaultObserver<T> {
 
     @Override
     public void onError(@NonNull Throwable e) {
-        mView.showError(((BaseException)e).getMsg());
+        if (e instanceof BaseException){
+            mView.showError(((BaseException)e).getMsg());
+        }else{
+            mView.showError(e.getMessage());
+        }
     }
 }
