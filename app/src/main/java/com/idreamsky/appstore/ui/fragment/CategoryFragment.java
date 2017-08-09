@@ -1,7 +1,9 @@
 package com.idreamsky.appstore.ui.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.idreamsky.appstore.R;
 import com.idreamsky.appstore.bean.CategoryBean;
@@ -10,6 +12,7 @@ import com.idreamsky.appstore.di.component.DaggerCategoryComponent;
 import com.idreamsky.appstore.di.module.CategoryModule;
 import com.idreamsky.appstore.presenter.CategoryPresenter;
 import com.idreamsky.appstore.presenter.contract.CategoryContract;
+import com.idreamsky.appstore.ui.activity.CategoryAppActivity;
 import com.idreamsky.appstore.ui.adapter.CategoryAdapter;
 import com.idreamsky.appstore.ui.decoration.DividerItemDecoration;
 
@@ -25,9 +28,17 @@ public class CategoryFragment extends ProgressFragment<CategoryPresenter> implem
     private CategoryAdapter adapter;
 
     @Override
-    public void showResult(List<CategoryBean> data) {
+    public void showResult(final List<CategoryBean> data) {
         adapter.setData(data);
         adapter.notifyDataSetChanged();
+        adapter.setItemClickListener(new CategoryAdapter.ItemClickListener() {
+            @Override
+            public void OnItemClick(View v, int position) {
+                Intent intent = new Intent(getActivity(), CategoryAppActivity.class);
+                intent.putExtra("id",data.get(position).getId());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

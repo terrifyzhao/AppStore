@@ -15,6 +15,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -43,5 +44,14 @@ public interface ApiService {
 
     @GET("category")
     Observable<BaseBean<List<CategoryBean>>> category();
+
+    @GET("category/featured/{category_id}")
+    Observable<BaseBean<PageBean<AppInfo>>> categoryFeatured(@Path("category_id") int categoryId,@Query("page") int page);
+
+    @GET("category/toplist/{category_id}")
+    Observable<BaseBean<PageBean<AppInfo>>> categoryTop(@Path("category_id") int categoryId,@Query("page") int page);
+
+    @GET("category/newlist/{category_id}")
+    Observable<BaseBean<PageBean<AppInfo>>> categoryNew(@Path("category_id") int categoryId,@Query("page") int page);
 
 }

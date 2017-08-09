@@ -46,6 +46,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.textName.setText(mData.get(position).getName());
         Glide.with(mContext).load(ICON_BASE_URL+mData.get(position).getIcon()).into(holder.ivIcon);
+        holder.itemView.setTag(position);
     }
 
     @Override
@@ -59,17 +60,39 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         this.mData = mData;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder{
 
         @BindView(R.id.ivIcon)
         ImageView ivIcon;
         @BindView(R.id.textName)
         TextView textName;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (itemClickListener != null){
+                        itemClickListener.OnItemClick(itemView, (Integer) itemView.getTag());
+                    }
+                }
+            });
         }
+
+
+
+    }
+
+
+    private ItemClickListener itemClickListener;
+
+    public void setItemClickListener(ItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
+
+    public interface ItemClickListener{
+        void OnItemClick(View v, int position);
     }
 
 

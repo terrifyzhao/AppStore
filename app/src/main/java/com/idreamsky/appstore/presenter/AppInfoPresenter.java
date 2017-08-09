@@ -27,7 +27,7 @@ public class AppInfoPresenter extends BasePresenter<AppInfoModel, AppInfoContrac
     public void RequestData(int type, int page) {
 
         Observer<PageBean<AppInfo>> observer;
-        if (page > 0){
+        if (page > 0) {
             observer = new Observer<PageBean<AppInfo>>() {
                 @Override
                 public void onSubscribe(@NonNull Disposable d) {
@@ -53,7 +53,7 @@ public class AppInfoPresenter extends BasePresenter<AppInfoModel, AppInfoContrac
 
                 }
             };
-        }else{
+        } else {
             observer = new ProgressObserver<PageBean<AppInfo>>(mView) {
                 @Override
                 public void onNext(@NonNull PageBean<AppInfo> pageBean) {
@@ -66,8 +66,56 @@ public class AppInfoPresenter extends BasePresenter<AppInfoModel, AppInfoContrac
             };
         }
 
-        mModel.getListData(type,page)
+        mModel.getListData(type, page)
                 .compose(RxHttpResponseCompat.<PageBean<AppInfo>>compatResult())
                 .subscribe(observer);
     }
+
+
+    public void RequestCategoryData(int type, int categoryId, int page) {
+        Observer<PageBean<AppInfo>> observer;
+        if (page > 0) {
+            observer = new Observer<PageBean<AppInfo>>() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {
+
+                }
+
+                @Override
+                public void onNext(@NonNull PageBean<AppInfo> pageBean) {
+                    if (pageBean != null) {
+                        mView.showResult(pageBean);
+                    } else {
+                        mView.showError("无数据");
+                    }
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+
+                }
+
+                @Override
+                public void onComplete() {
+
+                }
+            };
+        } else {
+            observer = new ProgressObserver<PageBean<AppInfo>>(mView) {
+                @Override
+                public void onNext(@NonNull PageBean<AppInfo> pageBean) {
+                    if (pageBean != null) {
+                        mView.showResult(pageBean);
+                    } else {
+                        mView.showError("无数据");
+                    }
+                }
+            };
+        }
+
+        mModel.getCategoryData(type, categoryId, page)
+                .compose(RxHttpResponseCompat.<PageBean<AppInfo>>compatResult())
+                .subscribe(observer);
+    }
+
 }

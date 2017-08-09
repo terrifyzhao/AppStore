@@ -18,19 +18,41 @@ public class AppInfoModel {
     public static final int RANKTYPE = 1;
     public static final int GAMETYPE = 2;
 
+    public static final int FEATURED = 1;
+    public static final int TOPLIST = 2;
+    public static final int NEWLIST = 3;
+
     private ApiService mApiService;
 
     public AppInfoModel(ApiService mApiService) {
         this.mApiService = mApiService;
     }
 
-    public Observable<BaseBean<PageBean<AppInfo>>> getListData(int type, int page){
-        if (type == RANKTYPE){
+
+    //返回应用列表项
+    public Observable<BaseBean<PageBean<AppInfo>>> getListData(int type, int page) {
+        if (type == RANKTYPE) {
             return mApiService.rank(page);
-        }else if (type == GAMETYPE){
+        } else if (type == GAMETYPE) {
             return mApiService.game(page);
-        }else {
+        } else {
             return Observable.empty();
         }
     }
+
+    //分类列表的数据
+    public Observable<BaseBean<PageBean<AppInfo>>> getCategoryData(int type, int categoryId, int page) {
+        if (type == FEATURED) {
+            return mApiService.categoryFeatured(categoryId, page);
+        } else if (type == TOPLIST) {
+            return mApiService.categoryTop(categoryId, page);
+        } else if (type == NEWLIST) {
+            return mApiService.categoryNew(categoryId, page);
+        } else {
+            return Observable.empty();
+
+        }
+    }
+
+
 }
