@@ -2,6 +2,7 @@ package com.idreamsky.appstore;
 
 import android.app.Application;
 import android.content.Context;
+import android.view.View;
 
 import com.idreamsky.appstore.di.component.AppComponent;
 import com.idreamsky.appstore.di.component.DaggerAppComponent;
@@ -14,6 +15,24 @@ import com.idreamsky.appstore.di.module.AppModule;
 public class AppApplication extends Application {
 
     private AppComponent mAppComponent;
+
+    private View mView;
+
+    public AppComponent getmAppComponent() {
+        return mAppComponent;
+    }
+
+    public void setmAppComponent(AppComponent mAppComponent) {
+        this.mAppComponent = mAppComponent;
+    }
+
+    public View getmView() {
+        return mView;
+    }
+
+    public void setmView(View mView) {
+        this.mView = mView;
+    }
 
     public static Application get(Context context){
         return (Application) context.getApplicationContext();

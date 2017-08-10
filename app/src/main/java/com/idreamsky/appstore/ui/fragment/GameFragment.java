@@ -1,7 +1,9 @@
 package com.idreamsky.appstore.ui.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.idreamsky.appstore.R;
 import com.idreamsky.appstore.bean.AppInfo;
@@ -11,7 +13,9 @@ import com.idreamsky.appstore.di.component.DaggerAppInfoComponent;
 import com.idreamsky.appstore.di.module.AppInfoModule;
 import com.idreamsky.appstore.presenter.AppInfoPresenter;
 import com.idreamsky.appstore.presenter.contract.AppInfoContract;
+import com.idreamsky.appstore.ui.activity.AppDetailActivity;
 import com.idreamsky.appstore.ui.adapter.AppInfoAdapter;
+import com.idreamsky.appstore.ui.adapter.CategoryAdapter;
 import com.idreamsky.appstore.ui.decoration.DividerItemDecoration;
 
 import butterknife.BindView;
@@ -92,6 +96,13 @@ public class GameFragment extends ProgressFragment<AppInfoPresenter> implements 
     public void showResult(PageBean<AppInfo> data) {
         adapter.setData(data.getDatas());
         adapter.notifyDataSetChanged();
+        adapter.setItemClickListener(new CategoryAdapter.ItemClickListener() {
+            @Override
+            public void OnItemClick(View v, int position) {
+                mAppApplication.setmView(v);
+                startActivity(new Intent(getActivity(), AppDetailActivity.class));
+            }
+        });
     }
 
 }

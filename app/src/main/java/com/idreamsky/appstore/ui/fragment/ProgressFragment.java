@@ -26,7 +26,7 @@ public abstract class ProgressFragment<T> extends Fragment implements BaseView {
     private FrameLayout contentLayout;
     private TextView errorText;
 
-    private AppApplication mAppApplication;
+    protected AppApplication mAppApplication;
     @Inject
     protected T mPresenter;
     private Unbinder bind;

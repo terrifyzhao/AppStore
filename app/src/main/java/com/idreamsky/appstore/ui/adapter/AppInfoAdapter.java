@@ -67,6 +67,7 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
         //排名
         holder.textNum.setVisibility(mBuilder.isShowNum ? View.VISIBLE : View.GONE);
         holder.textNum.setText(mData.get(position).getPosition()+1+".");
+        holder.itemView.setTag(position);
     }
 
     @Override
@@ -92,10 +93,28 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
         @BindView(R.id.briefText)
         TextView briefText;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (itemClickListener != null){
+                        itemClickListener.OnItemClick(itemView, (Integer) itemView.getTag());
+                    }
+                }
+            });
         }
+    }
+
+    private CategoryAdapter.ItemClickListener itemClickListener;
+
+    public void setItemClickListener(CategoryAdapter.ItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
+
+    public interface ItemClickListener{
+        void OnItemClick(View v, int position);
     }
 
     public static class Builder {
