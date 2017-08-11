@@ -1,41 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.idreamsky.appstore.ui.activity.AppDetailActivity"
-    android:gravity="center_horizontal"
     android:background="#6000"
-    android:orientation="vertical">
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context="com.idreamsky.appstore.ui.activity.AppDetailActivity">
 
-    <LinearLayout
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="160dp"
-        android:orientation="vertical"
-        android:background="@color/colorPrimary"
-        android:gravity="center">
+        android:fitsSystemWindows="true">
 
-        <ImageView
-            android:id="@+id/ivHead"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@mipmap/ic_launcher_round"/>
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:statusBarScrim="@color/colorPrimary"
+            android:layout_gravity="center"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            app:titleEnabled="false">
 
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorWhit"
-            android:layout_marginTop="10dp"
-            android:textSize="20sp"
-            android:text="name"/>
+            <RelativeLayout
+                android:id="@+id/headLayout"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:background="@color/colorWhit"
+                app:layout_collapseMode="parallax">
 
-    </LinearLayout>
+                <ImageView
+                    android:id="@+id/ivHead"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@mipmap/ic_launcher_round"
+                    android:layout_centerInParent="true"/>
 
-    <FrameLayout
-        android:id="@+id/contentLayout"
+                <ImageView
+                    android:id="@+id/ivBack"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    android:src="@drawable/back_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:navigationIcon="@drawable/back_button"
+                app:layout_collapseMode="pin"/>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="130dp"
+        android:elevation="5dp"
+        android:textSize="18sp"
+        app:dependTargetY="-100dp"
+        app:dependType="y"
+        app:dependsOn="@+id/app_bar"
+        app:layout_behavior="com.zoonref.SimpleViewBehavior"
+        app:targetX="38dp"
+        app:targetY="17dp" />
+
+
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-</LinearLayout>
+        <FrameLayout
+            android:id="@+id/contentLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+
+</android.support.design.widget.CoordinatorLayout>

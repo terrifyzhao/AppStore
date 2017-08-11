@@ -28,6 +28,6 @@
         android:layout_height="20dp"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/arrow_icon"/>
+        android:src="@drawable/back_black"/>
 
 </RelativeLayout>

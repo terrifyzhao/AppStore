@@ -3,10 +3,15 @@ package com.idreamsky.appstore.ui.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -23,6 +28,7 @@ import com.idreamsky.appstore.di.component.AppComponent;
 import com.idreamsky.appstore.ui.fragment.AppDetailFragment;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by idreamsky on 2017/8/10.
@@ -40,6 +46,13 @@ public class AppDetailActivity extends BaseActivity {
     @BindView(R.id.tvName)
     TextView tvName;
 
+    @BindView(R.id.app_bar)
+    AppBarLayout appBar;
+
+    @BindView(R.id.ivBack)
+    ImageView ivBack;
+
+
     @Override
     protected int setLayoutId() {
         return R.layout.activity_app_detail;
@@ -52,16 +65,50 @@ public class AppDetailActivity extends BaseActivity {
 
     @Override
     protected void init() {
+        initAppBar();
 
         loadHeadAndFragment();
 
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
 //        viewAnimation();
+    }
+
+    private void initAppBar() {
+
+        final ColorStateList textColors = tvName.getTextColors();
+
+        appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+
+                float rate = (float) Math.abs(verticalOffset) / appBarLayout.getTotalScrollRange();
+
+
+                if (rate <= 0.4) {
+                    tvName.setTextColor(textColors);
+                    Log.i("app", "1");
+                } else {
+                    Log.i("app", "2");
+                    tvName.setTextColor(Color.argb(255, (int) (255 * rate), (int) (255 * rate), (int) (255 * rate)));
+                }
+
+
+                Log.i("app", "onOffsetChanged: " + rate + "----" + appBarLayout.getTotalScrollRange() + "--" + verticalOffset);
+
+            }
+        });
     }
 
     private void loadHeadAndFragment() {
 
         AppInfo data = (AppInfo) getIntent().getExtras().get("appInfo");
-        Glide.with(this).load(Constant.ICON_BASE_URL+data.getIcon()).into(ivHead);
+        Glide.with(this).load(Constant.ICON_BASE_URL + data.getIcon()).into(ivHead);
         tvName.setText(data.getDisplayName());
 
         AppDetailFragment fragment = new AppDetailFragment();

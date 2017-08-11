@@ -5,13 +5,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -29,9 +29,8 @@ import com.idreamsky.appstore.di.component.AppComponent;
 import com.idreamsky.appstore.ui.adapter.FragmentAdapter;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity{
+public class MainActivity extends BaseActivity {
 
     @BindView(R.id.navigationView)
     NavigationView mNavigationView;
@@ -43,6 +42,7 @@ public class MainActivity extends BaseActivity{
     TabLayout mTabLayout;
     @BindView(R.id.viewPager)
     ViewPager mViewPager;
+
 
     private View headerView;
 
@@ -72,7 +72,7 @@ public class MainActivity extends BaseActivity{
         headerView.findViewById(R.id.ivPhoto).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
             }
         });
 
@@ -130,7 +130,7 @@ public class MainActivity extends BaseActivity{
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(adapter);
         mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorPrimary,null));
+        mTabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorPrimary, null));
     }
 
     @Override
@@ -144,14 +144,14 @@ public class MainActivity extends BaseActivity{
      * 刷新用户信息
      */
     private void refreshUser() {
-        String url = SharedUtil.with(this).getString("photo","");
-        String name = SharedUtil.with(this).getString("userName","");
-        if (TextUtils.isEmpty(name)){
+        String url = SharedUtil.with(this).getString("photo", "");
+        String name = SharedUtil.with(this).getString("userName", "");
+        if (TextUtils.isEmpty(name)) {
             ((TextView) headerView.findViewById(R.id.textName)).setText("请登录");
             ((ImageView) headerView.findViewById(R.id.ivPhoto)).setImageResource(R.mipmap.ic_launcher_round);
             return;
         }
-        if (!TextUtils.isEmpty(url)){
+        if (!TextUtils.isEmpty(url)) {
 
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.transform(new CircleCrop());
