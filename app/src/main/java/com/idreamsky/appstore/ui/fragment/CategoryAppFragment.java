@@ -67,10 +67,8 @@ public class CategoryAppFragment extends ProgressFragment<AppInfoPresenter> impl
 
         mRecycleView.setAdapter(adapter);
         mRecycleView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-        manager.setAutoMeasureEnabled(true);
-        mRecycleView.setLayoutManager(manager);
-        mRecycleView.setAdapter(adapter);
+//        manager.setAutoMeasureEnabled(true);
+        mRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override

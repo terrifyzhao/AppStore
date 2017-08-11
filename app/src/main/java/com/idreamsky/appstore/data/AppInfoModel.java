@@ -6,6 +6,7 @@ import com.idreamsky.appstore.bean.AppInfo;
 import com.idreamsky.appstore.bean.BaseBean;
 import com.idreamsky.appstore.bean.PageBean;
 import com.idreamsky.appstore.data.http.ApiService;
+import com.idreamsky.appstore.presenter.contract.AppInfoContract;
 
 import io.reactivex.Observable;
 
@@ -13,7 +14,7 @@ import io.reactivex.Observable;
  * Created by zhaojiuzhou on 2017/8/4.
  */
 
-public class AppInfoModel {
+public class AppInfoModel implements AppInfoContract.IAppInfoModel{
 
     public static final int RANKTYPE = 1;
     public static final int GAMETYPE = 2;
@@ -30,6 +31,7 @@ public class AppInfoModel {
 
 
     //返回应用列表项
+    @Override
     public Observable<BaseBean<PageBean<AppInfo>>> getListData(int type, int page) {
         if (type == RANKTYPE) {
             return mApiService.rank(page);
@@ -41,6 +43,7 @@ public class AppInfoModel {
     }
 
     //分类列表的数据
+    @Override
     public Observable<BaseBean<PageBean<AppInfo>>> getCategoryData(int type, int categoryId, int page) {
         if (type == FEATURED) {
             return mApiService.categoryFeatured(categoryId, page);
@@ -52,6 +55,11 @@ public class AppInfoModel {
             return Observable.empty();
 
         }
+    }
+
+    @Override
+    public Observable<BaseBean<AppInfo>> getAppDetail(int id) {
+        return mApiService.appDetail(id);
     }
 
 

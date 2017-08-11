@@ -6,15 +6,22 @@ import android.animation.ObjectAnimator;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.idreamsky.appstore.R;
+import com.idreamsky.appstore.bean.AppInfo;
+import com.idreamsky.appstore.common.Constant;
 import com.idreamsky.appstore.common.util.DensityUtil;
-import com.idreamsky.appstore.common.util.DeviceUtils;
 import com.idreamsky.appstore.di.component.AppComponent;
+import com.idreamsky.appstore.ui.fragment.AppDetailFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +36,12 @@ public class AppDetailActivity extends BaseActivity {
     @BindView(R.id.contentLayout)
     FrameLayout contentLayout;
 
+    @BindView(R.id.ivHead)
+    ImageView ivHead;
+
+    @BindView(R.id.tvName)
+    TextView tvName;
+
     @Override
     protected int setLayoutId() {
         return R.layout.activity_app_detail;
@@ -41,13 +54,34 @@ public class AppDetailActivity extends BaseActivity {
 
     @Override
     protected void init() {
+
+        loadHeadAndFragment();
+
+//        viewAnimation();
+    }
+
+    private void loadHeadAndFragment() {
+
+        AppInfo data = (AppInfo) getIntent().getExtras().get("appInfo");
+        Glide.with(this).load(Constant.ICON_BASE_URL+data.getIcon()).into(ivHead);
+        tvName.setText(data.getDisplayName());
+
+        AppDetailFragment fragment = new AppDetailFragment();
+        fragment.setArguments(getIntent().getExtras());
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.replace(R.id.contentLayout, fragment);
+        transaction.commit();
+    }
+
+    private void viewAnimation() {
         //获取点击的view视图
         View view = appApplication.getmView();
         //把view转换成Bitmap
         Bitmap bitmap = getViewImageCache(view);
 
         if (bitmap != null) {
-            contentLayout.setBackground(new BitmapDrawable(null,bitmap));
+            contentLayout.setBackground(new BitmapDrawable(null, bitmap));
         }
         int[] position = new int[2];
         view.getLocationOnScreen(position);
@@ -64,23 +98,24 @@ public class AppDetailActivity extends BaseActivity {
         contentLayout.setLayoutParams(params);
 
         open();
-
     }
 
-    private void open(){
+    //打开详情页面的动画
+    private void open() {
 
         int h = DensityUtil.getScreenH(this);
 
-
-        ObjectAnimator animator = ObjectAnimator.ofFloat(contentLayout,"scaleY",1f,(float)h);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(contentLayout, "scaleY", 1f, (float) h);
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
+
             }
 
             @Override
             public void onAnimationStart(Animator animation) {
-                contentLayout.setBackgroundColor(getResources().getColor(R.color.colorWhit,null));
+//                contentLayout.setBackgroundColor(getResources().getColor(R.color.colorWhit,null));
+                loadFragment();
             }
         });
         animator.setStartDelay(500);
@@ -89,6 +124,7 @@ public class AppDetailActivity extends BaseActivity {
     }
 
 
+    //获取View的bitmap
     private Bitmap getViewImageCache(View view) {
         view.setDrawingCacheEnabled(true);
         view.buildDrawingCache();
@@ -101,4 +137,10 @@ public class AppDetailActivity extends BaseActivity {
         return bitmap;
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

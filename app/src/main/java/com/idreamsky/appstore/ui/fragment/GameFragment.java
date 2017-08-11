@@ -93,14 +93,16 @@ public class GameFragment extends ProgressFragment<AppInfoPresenter> implements 
 
 
     @Override
-    public void showResult(PageBean<AppInfo> data) {
+    public void showResult(final PageBean<AppInfo> data) {
         adapter.setData(data.getDatas());
         adapter.notifyDataSetChanged();
         adapter.setItemClickListener(new CategoryAdapter.ItemClickListener() {
             @Override
             public void OnItemClick(View v, int position) {
                 mAppApplication.setmView(v);
-                startActivity(new Intent(getActivity(), AppDetailActivity.class));
+                Intent intent = new Intent(getActivity(), AppDetailActivity.class);
+                intent.putExtra("appInfo",data.getDatas().get(position));
+                startActivity(intent);
             }
         });
     }

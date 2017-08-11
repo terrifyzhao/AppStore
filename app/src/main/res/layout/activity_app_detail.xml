@@ -6,7 +6,32 @@
     android:layout_height="match_parent"
     tools:context="com.idreamsky.appstore.ui.activity.AppDetailActivity"
     android:gravity="center_horizontal"
-    android:background="#6000">
+    android:background="#6000"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:orientation="vertical"
+        android:background="@color/colorPrimary"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/ivHead"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@mipmap/ic_launcher_round"/>
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhit"
+            android:layout_marginTop="10dp"
+            android:textSize="20sp"
+            android:text="name"/>
+
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/contentLayout"

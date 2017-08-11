@@ -118,4 +118,6 @@ public class AppInfoPresenter extends BasePresenter<AppInfoModel, AppInfoContrac
                 .subscribe(observer);
     }
 
+
+
 }
