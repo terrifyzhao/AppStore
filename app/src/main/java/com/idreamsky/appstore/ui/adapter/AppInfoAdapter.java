@@ -1,6 +1,7 @@
 package com.idreamsky.appstore.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.idreamsky.appstore.AppApplication;
 import com.idreamsky.appstore.R;
 import com.idreamsky.appstore.bean.AppInfo;
+import com.idreamsky.appstore.ui.activity.AppDetailActivity;
 
 import java.util.List;
 
@@ -30,10 +33,12 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
     private List<AppInfo> mData;
     private LayoutInflater mInflater;
     private Builder mBuilder;
+    private AppApplication mApplication;
 
-    private AppInfoAdapter(Context mContext, Builder builder) {
+    private AppInfoAdapter(Context mContext, Builder builder, AppApplication application) {
         this.mContext = mContext;
         this.mBuilder = builder;
+        this.mApplication = application;
 
     }
 
@@ -53,7 +58,7 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         //应用名字
         holder.nameText.setText(mData.get(position).getDisplayName());
         //应用icon
@@ -67,7 +72,19 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
         //排名
         holder.textNum.setVisibility(mBuilder.isShowNum ? View.VISIBLE : View.GONE);
         holder.textNum.setText(mData.get(position).getPosition()+1+".");
-        holder.itemView.setTag(position);
+//        holder.itemView.setTag(position);
+
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mApplication.setmView(v);
+                Intent intent = new Intent(mContext, AppDetailActivity.class);
+                intent.putExtra("appInfo", mData.get(position));
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -96,25 +113,7 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
         public ViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (itemClickListener != null){
-                        itemClickListener.OnItemClick(itemView, (Integer) itemView.getTag());
-                    }
-                }
-            });
         }
-    }
-
-    private CategoryAdapter.ItemClickListener itemClickListener;
-
-    public void setItemClickListener(CategoryAdapter.ItemClickListener itemClickListener) {
-        this.itemClickListener = itemClickListener;
-    }
-
-    public interface ItemClickListener{
-        void OnItemClick(View v, int position);
     }
 
     public static class Builder {
@@ -123,9 +122,11 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
         private boolean isShowCategory;
         private boolean isShowBrief;
         private Context context;
+        private AppApplication appApplication;
 
-        public Builder(Context context) {
+        public Builder(Context context,AppApplication appApplication) {
             this.context = context;
+            this.appApplication = appApplication;
         }
 
         public Builder showNum(boolean showNum) {
@@ -144,7 +145,7 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
         }
 
         public AppInfoAdapter build() {
-            return new AppInfoAdapter(context,this);
+            return new AppInfoAdapter(context,this,appApplication);
         }
 
     }

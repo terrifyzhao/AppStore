@@ -51,11 +51,12 @@ public class RecommendFragment extends ProgressFragment<RecommendPresenter> impl
     }
 
     private void initRecycle(IndexBean data) {
-        IndexMultiAdapter adapter = new IndexMultiAdapter(getContext());
+        IndexMultiAdapter adapter = new IndexMultiAdapter(getContext(),mAppApplication);
         adapter.setData(data);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         manager.setAutoMeasureEnabled(true);
         mRecycleView.setLayoutManager(manager);
         mRecycleView.setAdapter(adapter);
+
     }
 }

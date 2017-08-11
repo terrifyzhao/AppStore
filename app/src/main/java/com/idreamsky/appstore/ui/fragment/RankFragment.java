@@ -1,7 +1,9 @@
 package com.idreamsky.appstore.ui.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.idreamsky.appstore.R;
 import com.idreamsky.appstore.bean.AppInfo;
@@ -11,6 +13,7 @@ import com.idreamsky.appstore.di.component.DaggerAppInfoComponent;
 import com.idreamsky.appstore.di.module.AppInfoModule;
 import com.idreamsky.appstore.presenter.AppInfoPresenter;
 import com.idreamsky.appstore.presenter.contract.AppInfoContract;
+import com.idreamsky.appstore.ui.activity.AppDetailActivity;
 import com.idreamsky.appstore.ui.adapter.AppInfoAdapter;
 import com.idreamsky.appstore.ui.decoration.DividerItemDecoration;
 
@@ -47,17 +50,19 @@ public class RankFragment extends ProgressFragment<AppInfoPresenter> implements 
     }
 
     private void initRecycleView() {
-        adapter = new AppInfoAdapter.Builder(getActivity())
+        adapter = new AppInfoAdapter.Builder(getActivity(),mAppApplication)
                 .showNum(true)
                 .showBrief(false)
                 .showCategory(true)
                 .build();
-        mRecycleView.setAdapter(adapter);
         mRecycleView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setAutoMeasureEnabled(true);
         mRecycleView.setLayoutManager(manager);
         mRecycleView.setAdapter(adapter);
+
+
+
         mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
@@ -85,8 +90,9 @@ public class RankFragment extends ProgressFragment<AppInfoPresenter> implements 
     }
 
     @Override
-    public void showResult(PageBean<AppInfo> data) {
+    public void showResult(final PageBean<AppInfo> data) {
         adapter.setData(data.getDatas());
+
         adapter.notifyDataSetChanged();
     }
 

@@ -48,12 +48,12 @@ public class GameFragment extends ProgressFragment<AppInfoPresenter> implements 
     @Override
     protected void init() {
         initRecycleView();
-        mPresenter.RequestData(GAMETYPE,page);
+        mPresenter.RequestData(GAMETYPE, page);
     }
 
 
     private void initRecycleView() {
-        adapter = new AppInfoAdapter.Builder(getActivity())
+        adapter = new AppInfoAdapter.Builder(getActivity(),mAppApplication)
                 .showNum(false)
                 .showBrief(true)
                 .showCategory(false)
@@ -77,7 +77,7 @@ public class GameFragment extends ProgressFragment<AppInfoPresenter> implements 
                 if (newState == RecyclerView.SCROLL_STATE_IDLE
                         && lastVisibleItemPosition == totalItemCount - 1
                         && visibleItemCount > 0) {
-                    mPresenter.RequestData(GAMETYPE,++page);
+                    mPresenter.RequestData(GAMETYPE, ++page);
                 }
             }
         });
@@ -96,15 +96,6 @@ public class GameFragment extends ProgressFragment<AppInfoPresenter> implements 
     public void showResult(final PageBean<AppInfo> data) {
         adapter.setData(data.getDatas());
         adapter.notifyDataSetChanged();
-        adapter.setItemClickListener(new CategoryAdapter.ItemClickListener() {
-            @Override
-            public void OnItemClick(View v, int position) {
-                mAppApplication.setmView(v);
-                Intent intent = new Intent(getActivity(), AppDetailActivity.class);
-                intent.putExtra("appInfo",data.getDatas().get(position));
-                startActivity(intent);
-            }
-        });
     }
 
 }

@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
@@ -24,7 +23,6 @@ import com.idreamsky.appstore.di.component.AppComponent;
 import com.idreamsky.appstore.ui.fragment.AppDetailFragment;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by idreamsky on 2017/8/10.
@@ -115,7 +113,7 @@ public class AppDetailActivity extends BaseActivity {
             @Override
             public void onAnimationStart(Animator animation) {
 //                contentLayout.setBackgroundColor(getResources().getColor(R.color.colorWhit,null));
-                loadFragment();
+                loadHeadAndFragment();
             }
         });
         animator.setStartDelay(500);
@@ -137,10 +135,4 @@ public class AppDetailActivity extends BaseActivity {
         return bitmap;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

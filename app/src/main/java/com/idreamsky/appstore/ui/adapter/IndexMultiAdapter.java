@@ -1,6 +1,9 @@
 package com.idreamsky.appstore.ui.adapter;
 
+import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,9 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.idreamsky.appstore.AppApplication;
 import com.idreamsky.appstore.R;
 import com.idreamsky.appstore.bean.Banner;
 import com.idreamsky.appstore.bean.IndexBean;
+import com.idreamsky.appstore.ui.activity.AppDetailActivity;
 import com.idreamsky.appstore.ui.decoration.DividerItemDecoration;
 import com.idreamsky.appstore.ui.widget.BannerLayout;
 
@@ -34,10 +39,13 @@ public class IndexMultiAdapter extends RecyclerView.Adapter {
     private LayoutInflater mInflater;
     private IndexBean mIndexBeen;
     private Context mContext;
+    private AppApplication mApplication;
 
-    public IndexMultiAdapter(Context context) {
+    public IndexMultiAdapter(Context context,AppApplication application) {
         this.mContext = context;
+        this.mApplication = application;
         mInflater = LayoutInflater.from(context);
+
     }
 
     public void setData(IndexBean indexBeen) {
@@ -105,7 +113,7 @@ public class IndexMultiAdapter extends RecyclerView.Adapter {
 
     private void setAppView(RecyclerView.ViewHolder holder,int type){
         AppViewHolder appViewHolder = (AppViewHolder) holder;
-        AppInfoAdapter adapter = new AppInfoAdapter.Builder(mContext).showNum(false).showBrief(true).showCategory(false).build();;
+        AppInfoAdapter adapter = new AppInfoAdapter.Builder(mContext,mApplication).showNum(false).showBrief(true).showCategory(false).build();;
         if (type == 2){
             appViewHolder.text.setText(mContext.getResources().getString(R.string.recommend_app));
             adapter.setData(mIndexBeen.getRecommendApps());
@@ -113,7 +121,7 @@ public class IndexMultiAdapter extends RecyclerView.Adapter {
             appViewHolder.text.setText(mContext.getResources().getString(R.string.recommend_game));
             adapter.setData(mIndexBeen.getRecommendGames());
         }
-        appViewHolder.recyclerView.setAdapter(adapter);
+
         appViewHolder.recyclerView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL_LIST));
         LinearLayoutManager manager = new LinearLayoutManager(mContext);
         manager.setAutoMeasureEnabled(true);
