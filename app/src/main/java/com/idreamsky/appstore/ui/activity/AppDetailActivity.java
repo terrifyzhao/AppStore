@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,8 +50,11 @@ public class AppDetailActivity extends BaseActivity {
     @BindView(R.id.app_bar)
     AppBarLayout appBar;
 
-    @BindView(R.id.ivBack)
-    ImageView ivBack;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+//    @BindView(R.id.ivBack)
+//    ImageView ivBack;
 
 
     @Override
@@ -65,16 +69,24 @@ public class AppDetailActivity extends BaseActivity {
 
     @Override
     protected void init() {
-        initAppBar();
 
-        loadHeadAndFragment();
-
-        ivBack.setOnClickListener(new View.OnClickListener() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+
+        initAppBar();
+
+        loadHeadAndFragment();
+
+//        ivBack.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
 
 //        viewAnimation();
     }
@@ -92,10 +104,10 @@ public class AppDetailActivity extends BaseActivity {
 
                 if (rate <= 0.4) {
                     tvName.setTextColor(textColors);
-                    Log.i("app", "1");
+                    toolbar.setNavigationIcon(R.drawable.back_button_black);
                 } else {
-                    Log.i("app", "2");
                     tvName.setTextColor(Color.argb(255, (int) (255 * rate), (int) (255 * rate), (int) (255 * rate)));
+                    toolbar.setNavigationIcon(R.drawable.back_button);
                 }
 
 

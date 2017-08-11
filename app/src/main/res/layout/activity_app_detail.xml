@@ -13,7 +13,8 @@
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="160dp"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        >
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
@@ -40,13 +41,13 @@
                     android:src="@mipmap/ic_launcher_round"
                     android:layout_centerInParent="true"/>
 
-                <ImageView
-                    android:id="@+id/ivBack"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginStart="20dp"
-                    android:src="@drawable/back_black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                <!--<ImageView-->
+                    <!--android:id="@+id/ivBack"-->
+                    <!--android:layout_marginTop="20dp"-->
+                    <!--android:layout_marginStart="20dp"-->
+                    <!--android:src="@drawable/back_button_black"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content" />-->
 
             </RelativeLayout>
 
@@ -54,7 +55,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:navigationIcon="@drawable/back_button"
+                app:navigationIcon="@drawable/back_button_black"
                 app:layout_collapseMode="pin"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>
