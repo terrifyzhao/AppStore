@@ -1,10 +1,10 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
     defaultConfig {
-        applicationId "com.idreamsky.appstore"
+
         minSdkVersion 23
         targetSdkVersion 25
         versionCode 1
@@ -26,23 +26,15 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:design:25.3.1'
+
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     compile 'io.reactivex.rxjava2:rxjava:2.1.2'
-    compile 'com.github.bumptech.glide:glide:4.0.0'
-    compile 'com.eftimoff:android-pathview:1.0.8@aar'
-    compile 'com.jakewharton:butterknife:8.7.0'
-    compile 'com.google.dagger:dagger:2.11'
+
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
-    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
-    testCompile 'junit:junit:4.12'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
-    compile 'com.ms-square:expandableTextView:0.1.4'
-    compile 'com.zoonref:simple-view-behavior:1.0'
-    compile project(':rxdownload2')
+
+
+    compile 'com.facebook.stetho:stetho:1.5.0'
+    compile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
 }
