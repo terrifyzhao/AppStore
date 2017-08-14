@@ -52,6 +52,10 @@ public class RxDownload {
     private volatile static RxDownload instance;
     private volatile static boolean bound = false;
 
+    private Retrofit mRetrofit;
+
+
+
     static {
         RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
             @Override
@@ -98,6 +102,9 @@ public class RxDownload {
         return instance;
     }
 
+
+
+
     /**
      * get Files by url. May be NULL if this url record not exists.
      * File[] {DownloadFile, TempFile, LastModifyFile}
@@ -139,8 +146,13 @@ public class RxDownload {
      * @return instance.
      */
     public RxDownload retrofit(Retrofit retrofit) {
+        this.mRetrofit = retrofit;
         downloadHelper.setRetrofit(retrofit);
         return this;
+    }
+
+    public Retrofit getRetrofit() {
+        return mRetrofit;
     }
 
     /**

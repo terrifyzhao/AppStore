@@ -63,6 +63,7 @@ public class CategoryAppFragment extends ProgressFragment<AppInfoPresenter> impl
                 .showNum(false)
                 .showBrief(true)
                 .showCategory(false)
+                .rxDownload()
                 .build();
 
         mRecycleView.setAdapter(adapter);

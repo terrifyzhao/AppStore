@@ -14,11 +14,14 @@ import com.idreamsky.appstore.AppApplication;
 import com.idreamsky.appstore.R;
 import com.idreamsky.appstore.bean.AppInfo;
 import com.idreamsky.appstore.ui.activity.AppDetailActivity;
+import com.idreamsky.appstore.ui.widget.DownloadController;
+import com.idreamsky.appstore.ui.widget.DownloadProgressButton;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import zlc.season.rxdownload2.RxDownload;
 
 import static com.idreamsky.appstore.common.Constant.ICON_BASE_URL;
 
@@ -29,23 +32,27 @@ import static com.idreamsky.appstore.common.Constant.ICON_BASE_URL;
 public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHolder> {
 
 
+
     private Context mContext;
     private List<AppInfo> mData;
     private LayoutInflater mInflater;
     private Builder mBuilder;
     private AppApplication mApplication;
 
-    private AppInfoAdapter(Context mContext, Builder builder, AppApplication application) {
+    private DownloadController downloadController;
+
+    private AppInfoAdapter(Context mContext, Builder builder, AppApplication application, RxDownload download) {
         this.mContext = mContext;
         this.mBuilder = builder;
         this.mApplication = application;
 
+        downloadController = new DownloadController(download,mContext);
     }
 
     public void setData(List<AppInfo> mData) {
-        if (this.mData != null){
+        if (this.mData != null) {
             this.mData.addAll(mData);
-        }else{
+        } else {
             this.mData = mData;
         }
     }
@@ -71,9 +78,8 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
         holder.categoryText.setText(mData.get(position).getLevel1CategoryName());
         //排名
         holder.textNum.setVisibility(mBuilder.isShowNum ? View.VISIBLE : View.GONE);
-        holder.textNum.setText(mData.get(position).getPosition()+1+".");
+        holder.textNum.setText(mData.get(position).getPosition() + 1 + ".");
 //        holder.itemView.setTag(position);
-
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -85,13 +91,17 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
                 mContext.startActivity(intent);
             }
         });
+
+//        holder.btnClick.
+        DownloadController.handleClick(holder.btnClick,mData.get(position));
     }
+
 
     @Override
     public int getItemCount() {
-        if (mData != null){
+        if (mData != null) {
             return mData.size();
-        }else{
+        } else {
             return 0;
         }
     }
@@ -109,6 +119,8 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
         TextView categoryText;
         @BindView(R.id.briefText)
         TextView briefText;
+        @BindView(R.id.btnClick)
+        DownloadProgressButton btnClick;
 
         public ViewHolder(final View itemView) {
             super(itemView);
@@ -123,8 +135,9 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
         private boolean isShowBrief;
         private Context context;
         private AppApplication appApplication;
+        private RxDownload download;
 
-        public Builder(Context context,AppApplication appApplication) {
+        public Builder(Context context, AppApplication appApplication) {
             this.context = context;
             this.appApplication = appApplication;
         }
@@ -144,8 +157,13 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
             return this;
         }
 
+        public Builder rxDownload(RxDownload download) {
+            this.download = download;
+            return this;
+        }
+
         public AppInfoAdapter build() {
-            return new AppInfoAdapter(context,this,appApplication);
+            return new AppInfoAdapter(context, this, appApplication, download);
         }
 
     }

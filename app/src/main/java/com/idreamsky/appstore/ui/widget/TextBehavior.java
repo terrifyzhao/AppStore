@@ -1,10 +1,8 @@
 package com.idreamsky.appstore.ui.widget;
 
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 /**

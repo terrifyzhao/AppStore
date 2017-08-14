@@ -17,4 +17,8 @@ public class DownloadFlag {
     public static final int INSTALL = 9997;     //安装中,暂未使用
     public static final int INSTALLED = 9998;   //已安装,暂未使用
     public static final int DELETED = 9999;     //已删除
+
+
+
+
 }
