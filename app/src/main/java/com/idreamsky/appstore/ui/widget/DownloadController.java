@@ -1,7 +1,8 @@
 package com.idreamsky.appstore.ui.widget;
 
 import android.content.Context;
-import android.support.v4.app.NavUtils;
+import android.os.Environment;
+import android.util.Log;
 
 import com.idreamsky.appstore.R;
 import com.idreamsky.appstore.bean.AppDownloadInfo;
@@ -10,13 +11,15 @@ import com.idreamsky.appstore.bean.BaseBean;
 import com.idreamsky.appstore.common.rx.RxHttpResponseCompat;
 import com.idreamsky.appstore.common.rx.RxSchedulers;
 import com.idreamsky.appstore.common.util.AppUtils;
-import com.jakewharton.rxbinding2.view.RxView;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import retrofit2.http.GET;
@@ -24,6 +27,8 @@ import retrofit2.http.Path;
 import zlc.season.rxdownload2.RxDownload;
 import zlc.season.rxdownload2.entity.DownloadEvent;
 import zlc.season.rxdownload2.entity.DownloadFlag;
+
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 /**
  * Created by idreamsky on 2017/8/14.
@@ -38,20 +43,24 @@ public class DownloadController {
     private Api mApi;
 
 
-    public DownloadController(RxDownload mDownload, Context context) {
-        this.mDownload = mDownload;
+    public DownloadController(RxDownload download, Context context) {
+        this.mDownload = download;
         this.mContext = context;
-        if (mDownload != null){
+        if (mDownload != null) {
             mApi = mDownload.getRetrofit().create(Api.class);
         }
     }
 
 
-    private void handleClick(final DownloadProgressButton btn, final AppInfo info) {
 
-        bindClick(btn,info);
+    //初始化按钮的状态
+    public void handleClick(final DownloadProgressButton btn, final AppInfo info) {
 
-        //判断本地是否安装了该应用
+        if (mApi == null) {
+            return;
+        }
+
+        //判断是否安装了该应用并返回一个Observable
         isInstallApp(info.getPackageName())
                 .flatMap(new Function<DownloadEvent, ObservableSource<DownloadEvent>>() {
                     @Override
@@ -86,76 +95,7 @@ public class DownloadController {
 
     }
 
-    private void bindClick(final DownloadProgressButton btn, final AppInfo appinfo) {
-        RxView.clicks(btn).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) throws Exception {
-                int flag = (int) btn.getTag(R.id.tag_apk_flag);
-
-                switch (flag) {
-                    case DownloadFlag.INSTALLED:
-                        install(appinfo.getPackageName());
-                        break;
-
-                    case DownloadFlag.STARTED:
-                        pauseDownload(appinfo);
-                        break;
-
-                    case DownloadFlag.NORMAL:
-                    case DownloadFlag.PAUSED:
-                        startDownload(btn,appinfo);
-                        break;
-
-                    case DownloadFlag.COMPLETED:
-                        installApk(appinfo);
-                        break;
-
-                    default:
-                        break;
-                }
-
-            }
-        });
-    }
-
-    private void installApk(AppInfo info) {
-        String path = downPath + File.separator + info.hashCode();
-        AppUtils.installApk(mContext,path);
-    }
-
-    private void startDownload(final DownloadProgressButton btn,final AppInfo info) {
-
-        final AppDownloadInfo downloadInfo = info.getDownloadInfo();
-        if (downloadInfo == null) {
-            getDownloadInfo(info).subscribe(new Consumer<AppDownloadInfo>() {
-                @Override
-                public void accept(AppDownloadInfo appDownloadInfo) throws Exception {
-                    info.setDownloadInfo(appDownloadInfo);
-                    download(btn,appDownloadInfo);
-                }
-            });
-        }else{
-            download(btn,downloadInfo);
-        }
-
-    }
-
-    private void download(DownloadProgressButton btn,AppDownloadInfo downloadInfo){
-        mDownload.startAll(downloadInfo.getDownloadUrl()).subscribe();
-        mDownload.receiveDownloadStatus(downloadInfo.getDownloadUrl()).subscribe(new DownloadConsumer(btn));
-
-    }
-
-    private void pauseDownload(AppInfo appinfo) {
-        mDownload.pauseServiceDownload(appinfo.getDownloadInfo().getDownloadUrl());
-    }
-
-    private void install(String packageName) {
-        AppUtils.runApp(mContext, packageName);
-    }
-
-
-    //判断是否安装
+    //判断应用是否安装
     private Observable<DownloadEvent> isInstallApp(String packName) {
         DownloadEvent event = new DownloadEvent();
 
@@ -164,8 +104,7 @@ public class DownloadController {
         return Observable.just(event);
     }
 
-
-    //文件是否存在
+    //判断文件是否存在
     private Observable<DownloadEvent> isExitApp(AppInfo info) {
         File file = new File(downPath + File.separator + info.hashCode());
 
@@ -174,6 +113,85 @@ public class DownloadController {
 
         return Observable.just(event);
     }
+
+    //安装应用
+    private void installApk(AppInfo info) {
+        String path = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS).getPath()
+                + File.separator + "apk" +File.separator + info.getReleaseKeyHash();
+
+        AppUtils.installApk(mContext, path);
+    }
+
+    //点击事件
+    public void bindClick(final DownloadProgressButton btn, final AppInfo appinfo) {
+
+        int flag = (int) btn.getTag(R.id.tag_apk_flag);
+        Log.i("app", "按钮点击" + flag);
+        switch (flag) {
+            case DownloadFlag.INSTALLED:
+                install(appinfo.getPackageName());
+                break;
+
+            case DownloadFlag.STARTED:
+                Log.i("app", "暂停下载");
+                pauseDownload(appinfo);
+                break;
+
+            case DownloadFlag.NORMAL:
+            case DownloadFlag.PAUSED:
+                Log.i("app", "开始下载");
+                startDownload(btn, appinfo);
+                break;
+
+            case DownloadFlag.COMPLETED:
+                installApk(appinfo);
+                break;
+
+            default:
+                break;
+        }
+
+    }
+
+    //获取下载信息
+    private void startDownload(final DownloadProgressButton btn, final AppInfo info) {
+
+        AppDownloadInfo downloadInfo = info.getDownloadInfo();
+        if (downloadInfo == null) {
+            Log.i("app", "startDownload: 无下载信息");
+            getDownloadInfo(info).subscribe(new Consumer<AppDownloadInfo>() {
+                @Override
+                public void accept(AppDownloadInfo appDownloadInfo) throws Exception {
+                    info.setDownloadInfo(appDownloadInfo);
+                    download(btn, appDownloadInfo);
+                }
+            });
+        } else {
+            Log.i("app", "startDownload: 有下载信息");
+            download(btn, downloadInfo);
+        }
+    }
+
+    private void download(DownloadProgressButton btn, AppDownloadInfo downloadInfo) {
+        //开始下载
+        Log.i("app", "下载地址"+downloadInfo.getDownloadUrl());
+        mDownload.serviceDownload(downloadInfo.getDownloadUrl())
+                .subscribe();
+
+        mDownload.receiveDownloadStatus(downloadInfo.getDownloadUrl())
+                .subscribe(new DownloadConsumer(btn));
+
+    }
+
+    private void pauseDownload(AppInfo appinfo) {
+        Log.i("app", "暂停的下载地址"+appinfo.getDownloadInfo().getDownloadUrl());
+        mDownload.pauseServiceDownload(appinfo.getDownloadInfo().getDownloadUrl()).subscribe();
+    }
+
+    private void install(String packageName) {
+        AppUtils.runApp(mContext, packageName);
+    }
+
 
     //获取下载状态
     private Observable<DownloadEvent> downloadStatus(AppDownloadInfo info) {
@@ -187,16 +205,18 @@ public class DownloadController {
     }
 
 
-    class DownloadConsumer implements Consumer<DownloadEvent> {
+    private class DownloadConsumer implements Consumer<DownloadEvent> {
 
         private DownloadProgressButton btn;
 
-        public DownloadConsumer(DownloadProgressButton btn) {
+        private DownloadConsumer(DownloadProgressButton btn) {
             this.btn = btn;
         }
 
         @Override
         public void accept(DownloadEvent event) throws Exception {
+            Log.i("app", "改变下载按钮状态 "+event.getFlag() + " progress = " + event.getDownloadStatus().getPercentNumber());
+
             btn.setTag(R.id.tag_apk_flag, event.getFlag());
 
             switch (event.getFlag()) {
@@ -227,8 +247,7 @@ public class DownloadController {
     }
 
 
-
-    interface Api{
+    interface Api {
 
         @GET("download/{id}")
         Observable<BaseBean<AppDownloadInfo>> getAppDownload(@Path("id") int id);

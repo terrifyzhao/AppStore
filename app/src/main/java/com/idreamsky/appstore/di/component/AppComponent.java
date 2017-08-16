@@ -2,16 +2,16 @@ package com.idreamsky.appstore.di.component;
 
 import android.app.Application;
 
-import com.idreamsky.appstore.AppApplication;
-import com.idreamsky.appstore.common.DownloadModule;
 import com.idreamsky.appstore.common.rx.RxErrorHandle;
 import com.idreamsky.appstore.data.http.ApiService;
 import com.idreamsky.appstore.di.module.AppModule;
+import com.idreamsky.appstore.di.module.DownloadModule;
 import com.idreamsky.appstore.di.module.HttpModule;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
+import retrofit2.Retrofit;
 import zlc.season.rxdownload2.RxDownload;
 
 /**

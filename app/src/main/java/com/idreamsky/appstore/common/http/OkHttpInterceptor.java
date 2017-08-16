@@ -44,6 +44,10 @@ public class OkHttpInterceptor implements Interceptor {
         String method = request.method();
         HttpUrl httpUrl = request.url();
 
+//        if (httpUrl.url().toString().contains("download")){
+//            return chain.proceed(request);
+//        }
+
         HashMap<String, Object> paramsMap = new HashMap<>();
         paramsMap.put(Constant.IMEI, DeviceUtils.getIMEI(mContext));
         paramsMap.put(Constant.MODEL, DeviceUtils.getModel());
@@ -105,6 +109,8 @@ public class OkHttpInterceptor implements Interceptor {
             }
             String newParams = mGson.toJson(rootMap);
             newRequest = new Request.Builder().url(httpUrl.toString()).post(RequestBody.create(JSON,newParams)).build();
+        }else {
+            newRequest = request;
         }
 
         return chain.proceed(newRequest);

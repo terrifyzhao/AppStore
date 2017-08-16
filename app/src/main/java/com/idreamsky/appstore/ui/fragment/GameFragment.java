@@ -1,9 +1,7 @@
 package com.idreamsky.appstore.ui.fragment;
 
-import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.idreamsky.appstore.R;
 import com.idreamsky.appstore.bean.AppInfo;
@@ -13,19 +11,22 @@ import com.idreamsky.appstore.di.component.DaggerAppInfoComponent;
 import com.idreamsky.appstore.di.module.AppInfoModule;
 import com.idreamsky.appstore.presenter.AppInfoPresenter;
 import com.idreamsky.appstore.presenter.contract.AppInfoContract;
-import com.idreamsky.appstore.ui.activity.AppDetailActivity;
 import com.idreamsky.appstore.ui.adapter.AppInfoAdapter;
-import com.idreamsky.appstore.ui.adapter.CategoryAdapter;
 import com.idreamsky.appstore.ui.decoration.DividerItemDecoration;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
+import zlc.season.rxdownload2.RxDownload;
 
 import static com.idreamsky.appstore.data.AppInfoModel.GAMETYPE;
-import static com.idreamsky.appstore.data.AppInfoModel.RANKTYPE;
 
 public class GameFragment extends ProgressFragment<AppInfoPresenter> implements AppInfoContract.View {
 
     public int page = 0;
+
+    @Inject
+    RxDownload mDownload;
 
     @BindView(R.id.recycleView)
     RecyclerView mRecycleView;
@@ -57,6 +58,7 @@ public class GameFragment extends ProgressFragment<AppInfoPresenter> implements 
                 .showNum(false)
                 .showBrief(true)
                 .showCategory(false)
+                .rxDownload(mDownload)
                 .build();
         mRecycleView.setAdapter(adapter);
         mRecycleView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));

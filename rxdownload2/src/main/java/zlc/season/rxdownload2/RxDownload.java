@@ -79,6 +79,7 @@ public class RxDownload {
     private DownloadService downloadService;
     private DownloadHelper downloadHelper;
 
+
     private RxDownload(Context context) {
         this.context = context.getApplicationContext();
         downloadHelper = new DownloadHelper(context);

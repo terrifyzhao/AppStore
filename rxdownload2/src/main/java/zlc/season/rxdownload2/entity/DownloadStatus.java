@@ -2,6 +2,7 @@ package zlc.season.rxdownload2.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.text.NumberFormat;
 

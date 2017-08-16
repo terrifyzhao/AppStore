@@ -7,6 +7,7 @@ import com.idreamsky.appstore.ui.fragment.GameFragment;
 import com.idreamsky.appstore.ui.fragment.RankFragment;
 
 import dagger.Component;
+import zlc.season.rxdownload2.RxDownload;
 
 /**
  * Created by zhaojiuzhou on 2017/8/4.
@@ -19,4 +20,6 @@ public interface AppInfoComponent {
     void injectRank(RankFragment fragment);
     void injectGame(GameFragment fragment);
     void injectCategory(CategoryAppFragment fragment);
+
+    RxDownload getDownload();
 }

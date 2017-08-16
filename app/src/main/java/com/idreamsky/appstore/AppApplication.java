@@ -8,6 +8,10 @@ import com.idreamsky.appstore.di.component.AppComponent;
 import com.idreamsky.appstore.di.component.DaggerAppComponent;
 import com.idreamsky.appstore.di.module.AppModule;
 
+import javax.inject.Inject;
+
+import retrofit2.Retrofit;
+
 /**
  * Created by zhaojiuzhou on 2017/7/27.
  */

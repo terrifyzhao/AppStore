@@ -14,9 +14,10 @@ import com.idreamsky.appstore.presenter.contract.AppInfoContract;
 import com.idreamsky.appstore.ui.adapter.AppInfoAdapter;
 import com.idreamsky.appstore.ui.decoration.DividerItemDecoration;
 
-import butterknife.BindView;
+import javax.inject.Inject;
 
-import static com.idreamsky.appstore.data.AppInfoModel.GAMETYPE;
+import butterknife.BindView;
+import zlc.season.rxdownload2.RxDownload;
 
 /**
  * Created by idreamsky on 2017/8/9.
@@ -32,6 +33,8 @@ public class CategoryAppFragment extends ProgressFragment<AppInfoPresenter> impl
     private int page = 0;
 
     private AppInfoAdapter adapter;
+
+
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
@@ -63,7 +66,6 @@ public class CategoryAppFragment extends ProgressFragment<AppInfoPresenter> impl
                 .showNum(false)
                 .showBrief(true)
                 .showCategory(false)
-                .rxDownload()
                 .build();
 
         mRecycleView.setAdapter(adapter);

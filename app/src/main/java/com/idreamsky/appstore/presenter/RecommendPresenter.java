@@ -34,7 +34,7 @@ public class RecommendPresenter extends BasePresenter<RecommendModel, RecommendC
     public void requestData() {
 
         RxPermissions rxPermissions = new RxPermissions((Activity) mContext);
-        rxPermissions.request(Manifest.permission.READ_PHONE_STATE)
+        rxPermissions.request(Manifest.permission.READ_PHONE_STATE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .flatMap(new Function<Boolean, ObservableSource<IndexBean>>() {
                     @Override
                     public ObservableSource<IndexBean> apply(@NonNull Boolean aBoolean) throws Exception {

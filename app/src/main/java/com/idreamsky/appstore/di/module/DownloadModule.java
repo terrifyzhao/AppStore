@@ -1,9 +1,8 @@
-package com.idreamsky.appstore.common;
+package com.idreamsky.appstore.di.module;
 
 import android.app.Application;
 import android.os.Environment;
-
-import com.idreamsky.appstore.AppApplication;
+import android.util.Log;
 
 import java.io.File;
 
@@ -27,10 +26,10 @@ public class DownloadModule {
     @Singleton
     public RxDownload provideDownload(Application application, Retrofit retrofit, File downDir) {
         return RxDownload.getInstance(application)
-                .defaultSavePath(downDir.getPath())
+                .defaultSavePath(downDir.getPath() + File.separator + "apk")
                 .retrofit(retrofit)
-                .maxDownloadNumber(10)
-                .maxThread(10);
+                .maxDownloadNumber(3)
+                .maxThread(3);
     }
 
     @Provides

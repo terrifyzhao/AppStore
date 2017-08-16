@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.idreamsky.appstore.AppApplication;
@@ -39,14 +40,14 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
     private Builder mBuilder;
     private AppApplication mApplication;
 
-    private DownloadController downloadController;
+    private DownloadController mDownloadController;
 
     private AppInfoAdapter(Context mContext, Builder builder, AppApplication application, RxDownload download) {
         this.mContext = mContext;
         this.mBuilder = builder;
         this.mApplication = application;
 
-        downloadController = new DownloadController(download,mContext);
+        mDownloadController = new DownloadController(download,mContext);
     }
 
     public void setData(List<AppInfo> mData) {
@@ -65,7 +66,7 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         //应用名字
         holder.nameText.setText(mData.get(position).getDisplayName());
         //应用icon
@@ -92,8 +93,15 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
             }
         });
 
-//        holder.btnClick.
-        DownloadController.handleClick(holder.btnClick,mData.get(position));
+        mDownloadController.handleClick(holder.btnClick,mData.get(position));
+        holder.btnClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "toast : "+position, Toast.LENGTH_SHORT).show();
+                mDownloadController.bindClick(holder.btnClick,mData.get(position));
+            }
+        });
+
     }
 
 
