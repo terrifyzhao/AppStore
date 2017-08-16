@@ -11,9 +11,12 @@ import com.idreamsky.appstore.bean.BaseBean;
 import com.idreamsky.appstore.common.rx.RxHttpResponseCompat;
 import com.idreamsky.appstore.common.rx.RxSchedulers;
 import com.idreamsky.appstore.common.util.AppUtils;
+import com.idreamsky.appstore.di.component.DaggerAppComponent;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -22,6 +25,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import retrofit2.Retrofit;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import zlc.season.rxdownload2.RxDownload;
@@ -43,11 +47,14 @@ public class DownloadController {
     private Api mApi;
 
 
-    public DownloadController(RxDownload download, Context context) {
+//    private Retrofit retrofit;
+
+    public DownloadController(RxDownload download, Context context, Retrofit retrofit) {
         this.mDownload = download;
         this.mContext = context;
-        if (mDownload != null) {
-            mApi = mDownload.getRetrofit().create(Api.class);
+
+        if (retrofit != null){
+            mApi = retrofit.create(Api.class);
         }
     }
 
@@ -156,6 +163,8 @@ public class DownloadController {
     //获取下载信息
     private void startDownload(final DownloadProgressButton btn, final AppInfo info) {
 
+        download(btn, null);
+
         AppDownloadInfo downloadInfo = info.getDownloadInfo();
         if (downloadInfo == null) {
             Log.i("app", "startDownload: 无下载信息");
@@ -174,7 +183,10 @@ public class DownloadController {
 
     private void download(DownloadProgressButton btn, AppDownloadInfo downloadInfo) {
         //开始下载
-        Log.i("app", "下载地址"+downloadInfo.getDownloadUrl());
+//        Log.i("app", "下载地址"+downloadInfo.getDownloadUrl());
+
+//        String url = "http://f7.market.xiaomi.com/download/AppStore/00f71949d661e45a520cc90e2b67d3e74c3a9b8d8";
+
         mDownload.serviceDownload(downloadInfo.getDownloadUrl())
                 .subscribe();
 

@@ -18,6 +18,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import retrofit2.Retrofit;
 
 
 public abstract class ProgressFragment<T> extends Fragment implements BaseView {
@@ -29,6 +30,10 @@ public abstract class ProgressFragment<T> extends Fragment implements BaseView {
     protected AppApplication mAppApplication;
     @Inject
     protected T mPresenter;
+
+    @Inject
+    protected  Retrofit mRetrofit;
+
     private Unbinder bind;
 
     @Override

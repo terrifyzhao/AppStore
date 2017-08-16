@@ -17,6 +17,7 @@ import com.idreamsky.appstore.ui.decoration.DividerItemDecoration;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import retrofit2.Retrofit;
 import zlc.season.rxdownload2.RxDownload;
 
 import static com.idreamsky.appstore.data.AppInfoModel.GAMETYPE;
@@ -27,6 +28,9 @@ public class GameFragment extends ProgressFragment<AppInfoPresenter> implements 
 
     @Inject
     RxDownload mDownload;
+
+    @Inject
+    Retrofit retrofit;
 
     @BindView(R.id.recycleView)
     RecyclerView mRecycleView;
@@ -54,7 +58,7 @@ public class GameFragment extends ProgressFragment<AppInfoPresenter> implements 
 
 
     private void initRecycleView() {
-        adapter = new AppInfoAdapter.Builder(getActivity(),mAppApplication)
+        adapter = new AppInfoAdapter.Builder(getActivity(),mAppApplication,retrofit)
                 .showNum(false)
                 .showBrief(true)
                 .showCategory(false)

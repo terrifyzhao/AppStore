@@ -22,6 +22,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Retrofit;
 import zlc.season.rxdownload2.RxDownload;
 
 import static com.idreamsky.appstore.common.Constant.ICON_BASE_URL;
@@ -33,7 +34,6 @@ import static com.idreamsky.appstore.common.Constant.ICON_BASE_URL;
 public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHolder> {
 
 
-
     private Context mContext;
     private List<AppInfo> mData;
     private LayoutInflater mInflater;
@@ -42,12 +42,12 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
 
     private DownloadController mDownloadController;
 
-    private AppInfoAdapter(Context mContext, Builder builder, AppApplication application, RxDownload download) {
+    private AppInfoAdapter(Context mContext, Builder builder, AppApplication application, RxDownload download, Retrofit retrofit) {
         this.mContext = mContext;
         this.mBuilder = builder;
         this.mApplication = application;
 
-        mDownloadController = new DownloadController(download,mContext);
+        mDownloadController = new DownloadController(download, mContext, retrofit);
     }
 
     public void setData(List<AppInfo> mData) {
@@ -93,12 +93,12 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
             }
         });
 
-        mDownloadController.handleClick(holder.btnClick,mData.get(position));
+        mDownloadController.handleClick(holder.btnClick, mData.get(position));
         holder.btnClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "toast : "+position, Toast.LENGTH_SHORT).show();
-                mDownloadController.bindClick(holder.btnClick,mData.get(position));
+                Toast.makeText(mContext, "toast : " + position, Toast.LENGTH_SHORT).show();
+                mDownloadController.bindClick(holder.btnClick, mData.get(position));
             }
         });
 
@@ -144,10 +144,12 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
         private Context context;
         private AppApplication appApplication;
         private RxDownload download;
+        private Retrofit retrofit;
 
-        public Builder(Context context, AppApplication appApplication) {
+        public Builder(Context context, AppApplication appApplication, Retrofit retrofit) {
             this.context = context;
             this.appApplication = appApplication;
+            this.retrofit = retrofit;
         }
 
         public Builder showNum(boolean showNum) {
@@ -171,7 +173,7 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
         }
 
         public AppInfoAdapter build() {
-            return new AppInfoAdapter(context, this, appApplication, download);
+            return new AppInfoAdapter(context, this, appApplication, download, retrofit);
         }
 
     }

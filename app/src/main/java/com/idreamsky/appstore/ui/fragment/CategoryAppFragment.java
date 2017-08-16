@@ -62,7 +62,7 @@ public class CategoryAppFragment extends ProgressFragment<AppInfoPresenter> impl
     protected void init() {
         mPresenter.RequestCategoryData(type, categoryId, page);
 
-        adapter = new AppInfoAdapter.Builder(getActivity(),mAppApplication)
+        adapter = new AppInfoAdapter.Builder(getActivity(),mAppApplication,null)
                 .showNum(false)
                 .showBrief(true)
                 .showCategory(false)

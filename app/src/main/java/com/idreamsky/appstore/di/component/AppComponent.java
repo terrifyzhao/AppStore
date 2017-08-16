@@ -29,6 +29,8 @@ public interface AppComponent {
     RxErrorHandle getErrorHandle();
 
     RxDownload getDownload();
+
+    Retrofit getRetrofit();
 }
 
 

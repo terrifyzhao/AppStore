@@ -50,7 +50,7 @@ public class RankFragment extends ProgressFragment<AppInfoPresenter> implements 
     }
 
     private void initRecycleView() {
-        adapter = new AppInfoAdapter.Builder(getActivity(),mAppApplication)
+        adapter = new AppInfoAdapter.Builder(getActivity(),mAppApplication,mRetrofit)
                 .showNum(true)
                 .showBrief(false)
                 .showCategory(true)
