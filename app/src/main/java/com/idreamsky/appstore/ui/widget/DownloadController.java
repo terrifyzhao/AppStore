@@ -11,18 +11,12 @@ import com.idreamsky.appstore.bean.BaseBean;
 import com.idreamsky.appstore.common.rx.RxHttpResponseCompat;
 import com.idreamsky.appstore.common.rx.RxSchedulers;
 import com.idreamsky.appstore.common.util.AppUtils;
-import com.idreamsky.appstore.di.component.DaggerAppComponent;
 
 import java.io.File;
-import java.util.concurrent.TimeUnit;
-
-import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import retrofit2.Retrofit;
@@ -41,7 +35,7 @@ import static android.os.Environment.DIRECTORY_DOWNLOADS;
 public class DownloadController {
 
     private RxDownload mDownload;
-    private String downPath = "";
+    private String downPath = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS).getPath() + File.separator + "apk" + File.separator;
     private Context mContext;
 
     private Api mApi;
@@ -73,7 +67,7 @@ public class DownloadController {
                     @Override
                     public ObservableSource<DownloadEvent> apply(@NonNull DownloadEvent event) throws Exception {
                         //如果没有安装则判断是否存在安装包
-                        if (event.getFlag() == DownloadFlag.NORMAL) {
+                        if (event.getFlag() == DownloadFlag.COMPLETED) {
                             return isExitApp(info);
                         }
                         //否则直接返回
@@ -106,15 +100,16 @@ public class DownloadController {
     private Observable<DownloadEvent> isInstallApp(String packName) {
         DownloadEvent event = new DownloadEvent();
 
-        event.setFlag(AppUtils.isInstalled(mContext, packName) ? DownloadFlag.INSTALLED : DownloadFlag.NORMAL);
+        event.setFlag(AppUtils.isInstalled(mContext, packName) ? DownloadFlag.INSTALLED : DownloadFlag.COMPLETED);
 
         return Observable.just(event);
     }
 
     //判断文件是否存在
     private Observable<DownloadEvent> isExitApp(AppInfo info) {
-        File file = new File(downPath + File.separator + info.hashCode());
 
+        File file = new File(downPath + info.getReleaseKeyHash());
+        Log.i("app", "isExitApp: "+file.getPath());
         DownloadEvent event = new DownloadEvent();
         event.setFlag(file.exists() ? DownloadFlag.COMPLETED : DownloadFlag.NORMAL);
 
@@ -123,9 +118,11 @@ public class DownloadController {
 
     //安装应用
     private void installApk(AppInfo info) {
-        String path = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS).getPath()
-                + File.separator + "apk" +File.separator + info.getReleaseKeyHash();
-
+//        String name = info.getDownloadInfo().getApk();
+//        name = name.substring(name.indexOf("/")+1,name.length());
+//        Log.i("app", "installApk: name = "+name);
+        String path = downPath + info.getReleaseKeyHash();
+        Log.i("app", "installApk: path = "+path);
         AppUtils.installApk(mContext, path);
     }
 
@@ -163,11 +160,9 @@ public class DownloadController {
     //获取下载信息
     private void startDownload(final DownloadProgressButton btn, final AppInfo info) {
 
-        download(btn, null);
-
         AppDownloadInfo downloadInfo = info.getDownloadInfo();
         if (downloadInfo == null) {
-            Log.i("app", "startDownload: 无下载信息");
+//            Log.i("app", "startDownload: 无下载信息");
             getDownloadInfo(info).subscribe(new Consumer<AppDownloadInfo>() {
                 @Override
                 public void accept(AppDownloadInfo appDownloadInfo) throws Exception {
@@ -176,18 +171,17 @@ public class DownloadController {
                 }
             });
         } else {
-            Log.i("app", "startDownload: 有下载信息");
+//            Log.i("app", "startDownload: 有下载信息");
             download(btn, downloadInfo);
         }
     }
 
     private void download(DownloadProgressButton btn, AppDownloadInfo downloadInfo) {
-        //开始下载
-//        Log.i("app", "下载地址"+downloadInfo.getDownloadUrl());
 
-//        String url = "http://f7.market.xiaomi.com/download/AppStore/00f71949d661e45a520cc90e2b67d3e74c3a9b8d8";
 
-        mDownload.serviceDownload(downloadInfo.getDownloadUrl())
+        Log.i("app", "下载地址: "+downloadInfo.getDownloadUrl());
+
+        mDownload.serviceDownload(downloadInfo.getDownloadUrl(),downloadInfo.getReleaseKeyHash())
                 .subscribe();
 
         mDownload.receiveDownloadStatus(downloadInfo.getDownloadUrl())
@@ -196,7 +190,6 @@ public class DownloadController {
     }
 
     private void pauseDownload(AppInfo appinfo) {
-        Log.i("app", "暂停的下载地址"+appinfo.getDownloadInfo().getDownloadUrl());
         mDownload.pauseServiceDownload(appinfo.getDownloadInfo().getDownloadUrl()).subscribe();
     }
 
@@ -252,6 +245,7 @@ public class DownloadController {
                     //按钮设置为打开状态
                     btn.setText("打开");
                     break;
+
                 default:
                     break;
             }

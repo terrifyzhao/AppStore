@@ -27,7 +27,6 @@ public class DownloadModule {
     public RxDownload provideDownload(Application application, Retrofit retrofit, File downDir) {
         return RxDownload.getInstance(application)
                 .defaultSavePath(downDir.getPath() + File.separator + "apk")
-
                 .maxDownloadNumber(3)
                 .maxThread(3);
     }
