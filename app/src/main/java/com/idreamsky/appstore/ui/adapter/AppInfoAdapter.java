@@ -146,10 +146,9 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
         private RxDownload download;
         private Retrofit retrofit;
 
-        public Builder(Context context, AppApplication appApplication, Retrofit retrofit) {
+        public Builder(Context context, AppApplication appApplication) {
             this.context = context;
             this.appApplication = appApplication;
-            this.retrofit = retrofit;
         }
 
         public Builder showNum(boolean showNum) {
@@ -169,6 +168,11 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
 
         public Builder rxDownload(RxDownload download) {
             this.download = download;
+            return this;
+        }
+
+        public Builder retrofit(Retrofit retrofit){
+            this.retrofit = retrofit;
             return this;
         }
 

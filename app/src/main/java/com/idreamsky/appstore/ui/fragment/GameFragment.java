@@ -58,18 +58,15 @@ public class GameFragment extends ProgressFragment<AppInfoPresenter> implements 
 
 
     private void initRecycleView() {
-        adapter = new AppInfoAdapter.Builder(getActivity(),mAppApplication,retrofit)
+        adapter = new AppInfoAdapter.Builder(getActivity(),mAppApplication)
                 .showNum(false)
                 .showBrief(true)
                 .showCategory(false)
                 .rxDownload(mDownload)
+                .retrofit(retrofit)
                 .build();
-        mRecycleView.setAdapter(adapter);
         mRecycleView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-        manager.setAutoMeasureEnabled(true);
-        mRecycleView.setLayoutManager(manager);
-        mRecycleView.setAdapter(adapter);
+        mRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
@@ -97,11 +94,9 @@ public class GameFragment extends ProgressFragment<AppInfoPresenter> implements 
         mPresenter.RequestData(GAMETYPE, page);
     }
 
-
     @Override
     public void showResult(final PageBean<AppInfo> data) {
         adapter.setData(data.getDatas());
-        adapter.notifyDataSetChanged();
+        mRecycleView.setAdapter(adapter);
     }
-
 }

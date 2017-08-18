@@ -118,9 +118,6 @@ public class DownloadController {
 
     //安装应用
     private void installApk(AppInfo info) {
-//        String name = info.getDownloadInfo().getApk();
-//        name = name.substring(name.indexOf("/")+1,name.length());
-//        Log.i("app", "installApk: name = "+name);
         String path = downPath + info.getReleaseKeyHash();
         Log.i("app", "installApk: path = "+path);
         AppUtils.installApk(mContext, path);
@@ -162,7 +159,6 @@ public class DownloadController {
 
         AppDownloadInfo downloadInfo = info.getDownloadInfo();
         if (downloadInfo == null) {
-//            Log.i("app", "startDownload: 无下载信息");
             getDownloadInfo(info).subscribe(new Consumer<AppDownloadInfo>() {
                 @Override
                 public void accept(AppDownloadInfo appDownloadInfo) throws Exception {
@@ -171,7 +167,6 @@ public class DownloadController {
                 }
             });
         } else {
-//            Log.i("app", "startDownload: 有下载信息");
             download(btn, downloadInfo);
         }
     }

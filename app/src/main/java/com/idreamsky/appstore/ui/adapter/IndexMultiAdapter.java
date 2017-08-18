@@ -113,7 +113,12 @@ public class IndexMultiAdapter extends RecyclerView.Adapter {
 
     private void setAppView(RecyclerView.ViewHolder holder,int type){
         AppViewHolder appViewHolder = (AppViewHolder) holder;
-        AppInfoAdapter adapter = new AppInfoAdapter.Builder(mContext,mApplication,null).showNum(false).showBrief(true).showCategory(false).build();;
+        AppInfoAdapter adapter = new AppInfoAdapter
+                .Builder(mContext,mApplication)
+                .showNum(false)
+                .showBrief(true)
+                .showCategory(false)
+                .build();
         if (type == 2){
             appViewHolder.text.setText(mContext.getResources().getString(R.string.recommend_app));
             adapter.setData(mIndexBeen.getRecommendApps());
@@ -139,7 +144,7 @@ public class IndexMultiAdapter extends RecyclerView.Adapter {
         @BindView(R.id.banner)
         BannerLayout banner;
 
-        public BannerViewHolder(View itemView) {
+        private BannerViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
@@ -147,7 +152,7 @@ public class IndexMultiAdapter extends RecyclerView.Adapter {
 
     class IconViewHolder extends RecyclerView.ViewHolder {
 
-        public IconViewHolder(View itemView) {
+        private IconViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
@@ -160,7 +165,7 @@ public class IndexMultiAdapter extends RecyclerView.Adapter {
         @BindView(R.id.recyclerView)
         RecyclerView recyclerView;
 
-        public AppViewHolder(View itemView) {
+        private AppViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
             //防止嵌套的RecycleView抢焦，导致自动滑动

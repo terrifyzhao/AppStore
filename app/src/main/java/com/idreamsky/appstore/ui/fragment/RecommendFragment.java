@@ -16,8 +16,6 @@ import butterknife.BindView;
 
 public class RecommendFragment extends ProgressFragment<RecommendPresenter> implements RecommendContract.View {
 
-    private static final String TAG = "App";
-
     @BindView(R.id.recycleView)
     RecyclerView mRecycleView;
 

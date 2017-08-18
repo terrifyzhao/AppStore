@@ -50,7 +50,7 @@ public class RankFragment extends ProgressFragment<AppInfoPresenter> implements 
     }
 
     private void initRecycleView() {
-        adapter = new AppInfoAdapter.Builder(getActivity(),mAppApplication,mRetrofit)
+        adapter = new AppInfoAdapter.Builder(getActivity(),mAppApplication)
                 .showNum(true)
                 .showBrief(false)
                 .showCategory(true)
@@ -60,8 +60,6 @@ public class RankFragment extends ProgressFragment<AppInfoPresenter> implements 
         manager.setAutoMeasureEnabled(true);
         mRecycleView.setLayoutManager(manager);
         mRecycleView.setAdapter(adapter);
-
-
 
         mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
