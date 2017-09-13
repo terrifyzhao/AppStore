@@ -93,7 +93,6 @@ public class DownloadController {
                 })
                 .compose(RxSchedulers.<DownloadEvent>io_main())
                 .subscribe(new DownloadConsumer(btn));
-
     }
 
     //判断应用是否安装

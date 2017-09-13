@@ -15,7 +15,6 @@ import com.idreamsky.appstore.ui.adapter.AppInfoAdapter;
 import com.idreamsky.appstore.ui.decoration.DividerItemDecoration;
 
 import javax.inject.Inject;
-
 import butterknife.BindView;
 import retrofit2.Retrofit;
 import zlc.season.rxdownload2.RxDownload;
@@ -34,6 +33,7 @@ public class GameFragment extends ProgressFragment<AppInfoPresenter> implements 
 
     @BindView(R.id.recycleView)
     RecyclerView mRecycleView;
+
     private AppInfoAdapter adapter;
 
     @Override
@@ -56,7 +56,6 @@ public class GameFragment extends ProgressFragment<AppInfoPresenter> implements 
         mPresenter.RequestData(GAMETYPE, page);
     }
 
-
     private void initRecycleView() {
         adapter = new AppInfoAdapter.Builder(getActivity(),mAppApplication)
                 .showNum(false)
@@ -72,21 +71,23 @@ public class GameFragment extends ProgressFragment<AppInfoPresenter> implements 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
-                int totalItemCount = recyclerView.getAdapter().getItemCount();
-                int lastVisibleItemPosition = lm.findLastVisibleItemPosition();
-                int visibleItemCount = recyclerView.getChildCount();
-
-                if (newState == RecyclerView.SCROLL_STATE_IDLE
-                        && lastVisibleItemPosition == totalItemCount - 1
-                        && visibleItemCount > 0) {
-                    mPresenter.RequestData(GAMETYPE, ++page);
-                }
+                loadMoreData(recyclerView,newState);
             }
         });
-
     }
 
+    private void loadMoreData(RecyclerView recyclerView, int newState){
+        LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
+        int totalItemCount = recyclerView.getAdapter().getItemCount();
+        int lastVisibleItemPosition = lm.findLastVisibleItemPosition();
+        int visibleItemCount = recyclerView.getChildCount();
+
+        if (newState == RecyclerView.SCROLL_STATE_IDLE
+                && lastVisibleItemPosition == totalItemCount - 1
+                && visibleItemCount > 0) {
+            mPresenter.RequestData(GAMETYPE, ++page);
+        }
+    }
 
     @Override
     protected void errorLayoutClick() {
