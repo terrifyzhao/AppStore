@@ -2,6 +2,8 @@ package com.idreamsky.appstore;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Build;
+import android.os.StrictMode;
 import android.view.View;
 
 import com.idreamsky.appstore.di.component.AppComponent;
@@ -49,6 +51,11 @@ public class AppApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
+        }
 
         mAppComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))

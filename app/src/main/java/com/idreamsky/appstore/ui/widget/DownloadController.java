@@ -170,6 +170,7 @@ public class DownloadController {
         }
     }
 
+    //开始下载
     private void download(DownloadProgressButton btn, AppDownloadInfo downloadInfo) {
 
 

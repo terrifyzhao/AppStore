@@ -25,6 +25,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -216,6 +218,23 @@ public class AppUtils {
         i.setDataAndType(Uri.parse("file://" + filePath), "application/vnd.android.package-archive");
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(i);
+
+
+//        Intent intent = new Intent(Intent.ACTION_VIEW);
+//        Uri data;
+//        // 判断版本大于等于7.0
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            // "net.csdn.blog.ruancoder.fileprovider"即是在清单文件中配置的authorities
+//            data = FileProvider.getUriForFile(context, "com.appstore.fileprovider", file);
+//            // 给目标应用一个临时授权
+//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//        } else {
+//            data = Uri.fromFile(file);
+//        }
+//        intent.setDataAndType(data, "application/vnd.android.package-archive");
+//        context.startActivity(intent);
+
+
         return true;
     }
 
